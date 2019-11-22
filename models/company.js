@@ -3,16 +3,27 @@ const mongoose = require("mongoose");
 // Schema variable
 const Schema = mongoose.Schema;
 
-// Tags
 const companySchema = new Schema(
   {
     name: {
       type: String,
       required: true
     },
-    admin: {
+    mainAdmin: {
       type: Schema.Types.ObjectId,
-      ref: "users",
+      ref: "User",
+      required: true
+    },
+    phoneContacts: {
+      main: {
+        type: Number,
+        required: true
+      },
+      others: [Number]
+    },
+    points: {
+      type: Number,
+      default: 0,
       required: true
     },
     offices: {
@@ -26,12 +37,15 @@ const companySchema = new Schema(
             type: String,
             required: true
           },
+          scheduledMaintenance: {
+            type: Date
+          },
           sensors: {
             type: [
               {
                 sensorId: {
                   type: Schema.Types.ObjectId,
-                  ref: "sensors",
+                  ref: "Sensor",
                   required: true
                 },
                 officeLocation: {

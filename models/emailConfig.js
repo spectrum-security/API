@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 const Base64 = require("js-base64").Base64;
+
+const Schema = mongoose.Schema;
 
 const emailConfig = new Schema({
   user: {
@@ -35,5 +36,5 @@ emailConfig.pre("save", next => {
   }
 });
 
-const emailConfig = mongoose.model("EmailConfig", emailConfig);
-module.exports = emailConfig;
+const EmailConfig = mongoose.model("EmailConfig", emailConfig);
+module.exports = EmailConfig;

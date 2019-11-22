@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const _ = require("lodash");
 const uniqueValidator = require("mongoose-unique-validator");
 const fs = require("fs-extra");
+
 const Schema = mongoose.Schema;
 
 const getTypes = JSON.parse(fs.readFileSync("example/emailTypes.json", "utf8"));

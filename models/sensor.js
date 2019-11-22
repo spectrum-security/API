@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 // Schema variable
 const Schema = mongoose.Schema;
 
-// Tags
 const sensorSchema = new Schema(
   {
     companyId: {
@@ -20,10 +19,6 @@ const sensorSchema = new Schema(
       },
       required: true
     },
-    // location: {
-    //   type: String,
-    //   required: true
-    // },
     maintenance: {
       type: [
         {
@@ -36,6 +31,10 @@ const sensorSchema = new Schema(
           required: true
         }
       ]
+    },
+    active: {
+      type: Boolean,
+      required: true
     }
   },
   {
