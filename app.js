@@ -35,6 +35,7 @@ const app = express();
 // Routes
 const indexRoute = require("./routes/index.route");
 const authRoute = require("./routes/auth.route");
+const companyRoute = require("./routes/company.route");
 
 // App dependencies
 app.use(logger("dev"));
@@ -49,6 +50,7 @@ app.set("port", process.env.PORT || 3000);
 // Set routes
 app.use("/", indexRoute);
 app.use("/auth", authRoute);
+app.use("/company", companyRoute);
 
 // Log app errors with morgan
 process.on("uncaughtException", error => {
