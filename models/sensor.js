@@ -5,7 +5,6 @@ const Schema = mongoose.Schema;
 
 const sensorSchema = new Schema(
   {
-    name:String
     companyId: {
       type: Schema.Types.ObjectId,
       required: true
