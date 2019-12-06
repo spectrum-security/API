@@ -51,8 +51,8 @@ app.set("port", process.env.PORT || 3000);
 // Set routes
 app.use("/", indexRoute);
 app.use("/auth", authRoute);
-app.use("/company", companyRoute);
 app.use("/sensor", sensorRoute);
+app.use("/companies", companyRoute);
 
 // Log app errors with morgan
 process.on("uncaughtException", error => {
