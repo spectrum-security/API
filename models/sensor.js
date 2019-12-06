@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 
 const sensorSchema = new Schema(
   {
+    name:String
     companyId: {
       type: Schema.Types.ObjectId,
       required: true
@@ -19,19 +20,17 @@ const sensorSchema = new Schema(
       },
       required: true
     },
-    maintenance: {
-      type: [
-        {
-          date: {
-            type: Date,
-            required: true
-          },
-
-          statusReport: String,
-          required: true
+    maintenance:[
+      {
+        date:{
+          type:Date,
+          required:true
+        },
+        report:{
+          statusReport:String  
         }
-      ]
-    },
+      }
+    ],
     active: {
       type: Boolean,
       required: true
