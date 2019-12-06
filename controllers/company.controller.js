@@ -6,8 +6,9 @@ const messages = require("../utils/jsonMessages");
 exports.getCompany = async (req, res, next) => {
     try{
         console.log(req.body)
-        const company = await CompanyModel.findOne({name: req.body.name})
-        
+        //const company = await CompanyModel.findOne({name: req.body.name})
+        const company = await CompanyModel.find()
+        console.log(company)
         
         if(!company)
             return res  
