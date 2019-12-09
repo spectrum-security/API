@@ -6,12 +6,12 @@ const Schema = mongoose.Schema;
 // Tags
 const logSchema = new Schema(
   {
-    recordadedAt: {
+    createdAt: {
       type: Date,
-      required: true
+      default: Date.now()
     },
     sensorType: {
-        type:Number,
+        type: Number,
         validate: {
             validator: value => {
               return [1, 2].indexOf(value) > -1; // 1:Motion sensor 2: Fingerprint sensor
@@ -26,8 +26,8 @@ const logSchema = new Schema(
         required: true
       },
     userId:{
-        type:Schema.Types.ObjectId,
-        required:true
+        type: Schema.Types.ObjectId,
+        required: true
     }
   },
   {
