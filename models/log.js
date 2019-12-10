@@ -20,6 +20,26 @@ const logSchema = new Schema(
           },
           required: true
     },
+    alteredValue:{
+        type:[
+            {
+                alteredField:{
+                    type:String,
+                    required:true
+                },
+                previousValue:{
+                    type:String,
+                    required:true
+                },
+                newValue:{
+                    type:String,
+                    required:true
+                }
+            }
+        ]
+    },
+    
+     
     sensorId: {
         type: Schema.Types.ObjectId,
         ref: "Sensor",
