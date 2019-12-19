@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 
 require("dotenv").config();
 
+require("./config/passport");
+
 const config = require("./config/db.config");
 
 mongoose.connect(
