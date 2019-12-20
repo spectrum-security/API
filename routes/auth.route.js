@@ -2,8 +2,29 @@ const express = require("express");
 const router = express.Router();
 
 const AuthController = require("../controllers/auth.controller");
+const checkAuth = require("../middleware/checkAuth");
+const authValidation = require("../middleware/validations/auth.validation");
 
 /* GET home page. */
-router.get("/login", AuthController.login);
+router.post(
+  "/login",
+  authValidation.loginValidationRules(),
+  authValidation.validate,
+  AuthController.login
+);
+
+router.post(
+  "/sign-up",
+  authValidation.signUpValidationRules(),
+  authValidation.validate,
+  AuthController.signUp
+);
+
+router.get(
+  "/me",
+  authValidation.jwtValidationRules(),
+  checkAuth,
+  AuthController.getMe
+);
 
 module.exports = router;

@@ -31,7 +31,8 @@ const userSchema = new Schema(
         },
         message: "{VALUE} is not a valid type"
       },
-      required: true
+      required: true,
+      default: 3
     },
     email: {
       type: String,
@@ -40,17 +41,16 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: true
+      required: true,
+      select: false
     },
     // May change to userId in companies collection
     companyId: {
       type: Schema.Types.ObjectId,
-      ref: "Company",
-      required: true
+      ref: "Company"
     },
     fingerprint: {
-      type: String, // Will be a string of the path to the file system
-      unique: true
+      type: String // Will be a string of the path to the file system
     }
   },
   {
@@ -59,7 +59,7 @@ const userSchema = new Schema(
   }
 );
 
-userSchema.pre("save", next => {
+userSchema.pre("save", function(next) {
   if (this.isNew || this.isModified("password")) {
     const document = this;
     bcrypt.hash(document.password, saltRounds, (err, hashedPassword) => {
