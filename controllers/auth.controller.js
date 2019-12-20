@@ -25,7 +25,6 @@ exports.getMe = async (req, res, next) => {
 
 exports.signUp = async (req, res, next) => {
   try {
-    console.log(req.body);
     let newUser = new UserModel({
       name: req.body.name,
       email: req.body.email,
@@ -40,7 +39,6 @@ exports.signUp = async (req, res, next) => {
       message: messages.user.signUpSuccess.message
     });
   } catch (error) {
-    console.log(error);
     res.status(messages.internalServerError.status).json({
       success: messages.internalServerError.success,
       message: messages.internalServerError.message

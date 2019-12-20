@@ -50,8 +50,7 @@ const userSchema = new Schema(
       ref: "Company"
     },
     fingerprint: {
-      type: String, // Will be a string of the path to the file system
-      unique: true
+      type: String // Will be a string of the path to the file system
     }
   },
   {

@@ -37,6 +37,7 @@ const app = express();
 // Routes
 const indexRoute = require("./routes/index.route");
 const authRoute = require("./routes/auth.route");
+const usersRoute = require("./routes/user.route");
 const companyRoute = require("./routes/company.route");
 const sensorRoute = require("./routes/sensor.route");
 
@@ -53,6 +54,7 @@ app.set("port", process.env.PORT || 3000);
 // Set routes
 app.use("/", indexRoute);
 app.use("/auth", authRoute);
+app.use("/users", usersRoute);
 app.use("/sensor", sensorRoute);
 app.use("/companies", companyRoute);
 

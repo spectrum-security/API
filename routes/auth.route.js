@@ -3,12 +3,28 @@ const router = express.Router();
 
 const AuthController = require("../controllers/auth.controller");
 const checkAuth = require("../middleware/checkAuth");
+const authValidation = require("../middleware/validations/auth.validation");
 
 /* GET home page. */
-router.post("/login", AuthController.login);
+router.post(
+  "/login",
+  authValidation.loginValidationRules(),
+  authValidation.validate,
+  AuthController.login
+);
 
-router.post("/sign-up", AuthController.signUp);
+router.post(
+  "/sign-up",
+  authValidation.signUpValidationRules(),
+  authValidation.validate,
+  AuthController.signUp
+);
 
-router.get("/me", checkAuth, AuthController.getMe);
+router.get(
+  "/me",
+  authValidation.jwtValidationRules(),
+  checkAuth,
+  AuthController.getMe
+);
 
 module.exports = router;
