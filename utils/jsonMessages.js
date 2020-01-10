@@ -18,6 +18,9 @@ module.exports = {
   user: {
     notFound: {
       name: "usersNotFound",
+      message: {
+        pt: "Nenhum utilizador encontrado."
+      },
       content: {
         users: []
       },

@@ -54,12 +54,21 @@ exports.login = async (req, res, next) => {
       .select("+password")
       .lean();
 
+    if (!user) {
+      return res.status(messages.user.notFound.status).send({
+        success: messages.user.notFound.success,
+        message: messages.user.notFound.message,
+        emailNotFound: true
+      });
+    }
+
     const isPasswordValid = bcrypt.compareSync(password, user.password);
 
     if (!isPasswordValid) {
-      res.status(messages.user.invalidPassword.status).json({
+      return res.status(messages.user.invalidPassword.status).json({
         success: messages.user.invalidPassword.success,
-        message: messages.user.invalidPassword.message
+        message: messages.user.invalidPassword.message,
+        passwordError: true
       });
     }
 
