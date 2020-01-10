@@ -1,0 +1,9 @@
+MONGO_DB=connection
+MONGO_DB_PASS=pass
+MONGO_DB_USER=username
+MONGO_DB_SECRET=secret
+
+JWT_KEY=secretkey
+JWT_HOURS_DURATION=0
+
+NODE_ENV=development
