@@ -7,6 +7,11 @@ const sensorSchema = new Schema(
   {
     companyId: {
       type: Schema.Types.ObjectId,
+      ref: "Company",
+      required: true
+    },
+    location: {
+      type: String,
       required: true
     },
     sensorType: {
@@ -19,20 +24,20 @@ const sensorSchema = new Schema(
       },
       required: true
     },
-    maintenance:[
+    maintenance: [
       {
-        date:{
-          type:Date,
-          required:true
+        date: {
+          type: Date
         },
-        report:{
-          statusReport:String  
+        report: {
+          statusReport: String
         }
       }
     ],
     active: {
       type: Boolean,
-      required: true
+      required: true,
+      default: true
     }
   },
   {

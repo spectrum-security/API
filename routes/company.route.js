@@ -1,18 +1,16 @@
-const CompanyController = require("../controllers/company.controller")
-const express = require("express")
-const router = express.Router()
+const CompanyController = require("../controllers/company.controller");
+const express = require("express");
+const router = express.Router();
+const checkAuth = require("../middleware/checkAuth");
 
+router.get("/", checkAuth, CompanyController.getCompany);
 
-router.get("/", CompanyController.getCompany)
+router.get("/:id", checkAuth, CompanyController.getCompanyById);
 
-router.get("/:id", CompanyController.getCompanyById)
+router.post("/", checkAuth, CompanyController.postCompany);
 
-router.post("/", CompanyController.postCompany)
+router.delete("/:id", checkAuth, CompanyController.deleteCompany);
 
-router.delete("/:id",CompanyController.deleteCompany)
+router.put("/:id", checkAuth, CompanyController.updateCompany);
 
-router.put("/:id",CompanyController.updateCompany)
-
-
-
-module.exports = router
+module.exports = router;

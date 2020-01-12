@@ -1,16 +1,54 @@
 const User = require("../models/user");
+const msg = require("../utils/jsonMessages");
+const _ = require("lodash");
 
 exports.get = async function(req, res) {
-  const user = req.query;
+  console.log(req.query);
+
   try {
-    //search by id
-    if (user.id) {
-      return res.send(await User.find({ _id: user.id }));
-    }
-    //Searches mongodb for everything
-    else {
-      return res.send(await User.find());
-    }
+    // pagination vars
+    const page = parseInt(req.query.page);
+    const size = parseInt(req.query.perPage);
+    console.log(req.query.perPage);
+    const orderBy = req.query.orderBy;
+    const orderType = req.query.orderType;
+    const search = req.query.search
+      ? new RegExp(".*" + req.query.search + ".*", "i")
+      : "";
+
+    // set skip and size of pagination query
+    const pagination = {
+      skip: size * (page - 1), // -1 because query.page starts at 1
+      limit: size
+    };
+
+    const query = {};
+    const searchForQuery = [];
+
+    // maps trought fields and  creates RegExp for find query
+    _.map(["email", "name.last"], el => {
+      if (req.query.search) searchForQuery.push({ [el]: search });
+    });
+
+    // defines query if search isnt empty
+    if (searchForQuery.length > 0) query.$or = searchForQuery;
+
+    // counts total users for pagination calculation in frontend
+    const totalUsers = await User.countDocuments(query).lean();
+    console.log(pagination);
+    const users = await User.find(query)
+      .skip(pagination.skip)
+      .limit(pagination.limit)
+      .sort({ [orderBy]: orderType })
+      .populate("companyId")
+      .lean();
+
+    return res.status(msg.user.getUsers().status).send({
+      content: { users: msg.user.getUsers(users).content.users },
+      totalUsers: totalUsers,
+      status: msg.user.getUsers().status,
+      success: msg.user.getUsers().success
+    });
   } catch (err) {
     return res.status(400).send({ error: `Could not get: ${err}` });
   }

@@ -3,7 +3,9 @@ module.exports = {
     error: {
       name: "dbError",
       message: {
-        pt: "Algo correu mal, veridique a ligação com a base de dados."
+        pt: "Algo correu mal, veridique a ligação com a base de dados.",
+        en:
+          "Something went wrong. Please check the connection with the database"
       },
       status: 503,
       success: false
@@ -11,7 +13,10 @@ module.exports = {
   },
   internalServerError: {
     name: "internalServerError",
-    message: "Alguma coisa correu mal na nossa parte.",
+    message: {
+      pt: "Alguma coisa correu mal na nossa parte.",
+      en: "Something went wrong on our end"
+    },
     status: 500,
     success: false
   },
@@ -19,7 +24,8 @@ module.exports = {
     notFound: {
       name: "usersNotFound",
       message: {
-        pt: "Nenhum utilizador encontrado."
+        pt: "Nenhum utilizador encontrado.",
+        en: "No user was found"
       },
       content: {
         users: []
@@ -40,7 +46,8 @@ module.exports = {
     invalidEmail: {
       name: "invalidEmail",
       message: {
-        pt: "Email não encontrado."
+        pt: "Email não encontrado.",
+        en: "Email adress was not found"
       },
       status: 404,
       success: false
@@ -48,7 +55,8 @@ module.exports = {
     invalidPassword: {
       name: "invalidPassword",
       message: {
-        pt: "Palavra-passe inválida."
+        pt: "Palavra-passe inválida.",
+        en: "The password submited is incorrect"
       },
       status: 401,
       success: false
@@ -57,7 +65,8 @@ module.exports = {
       return {
         name: "valid",
         message: {
-          pt: "Sessão iniciada."
+          pt: "Sessão iniciada.",
+          en: "You are now signed in"
         },
         content: { jwt, user },
         status: 200,
@@ -68,7 +77,8 @@ module.exports = {
       return {
         name: "signUpError",
         message: {
-          pt: "Preencha todos os campos corretamente."
+          pt: "Preencha todos os campos corretamente.",
+          en: "Fill all the fields correctly"
         },
         content: { error: errors },
         status: 400,
@@ -78,7 +88,8 @@ module.exports = {
     signUpSuccess: {
       name: "signUpSuccess",
       message: {
-        pt: "Conta criada com sucesso."
+        pt: "Conta criada com sucesso.",
+        en: "Account created with success"
       },
       status: 200,
       success: true
@@ -86,7 +97,8 @@ module.exports = {
     insufficientPermissions: {
       name: "insufficientPermissions",
       message: {
-        pt: "Sem permissões."
+        pt: "Sem permissões.",
+        en: "You don't have sufficient permissions"
       },
       status: 403,
       success: false
@@ -104,7 +116,8 @@ module.exports = {
     missing: {
       name: "missingToken",
       message: {
-        pt: "Token necessário."
+        pt: "Token necessário.",
+        en: "Token is necessary"
       },
       status: 401,
       success: false
@@ -112,7 +125,8 @@ module.exports = {
     malformated: {
       name: "malformatedToken",
       message: {
-        pt: "Token desformatado."
+        pt: "Token desformatado.",
+        en: "Malformed Token"
       },
       status: 401,
       success: false
@@ -120,7 +134,8 @@ module.exports = {
     invalid: {
       name: "invalidToken",
       message: {
-        pt: "Token inválido."
+        pt: "Token inválido.",
+        en: "Invalid Token"
       },
       status: 401,
       success: false

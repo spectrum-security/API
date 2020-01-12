@@ -41,6 +41,7 @@ const authRoute = require("./routes/auth.route");
 const usersRoute = require("./routes/user.route");
 const companyRoute = require("./routes/company.route");
 const sensorRoute = require("./routes/sensor.route");
+const logRoute = require("./routes/log.route");
 
 // App dependencies
 app.use(logger("dev"));
@@ -57,7 +58,8 @@ app.set("port", process.env.PORT || 3000);
 app.use("/", indexRoute);
 app.use("/auth", authRoute);
 app.use("/users", usersRoute);
-app.use("/sensor", sensorRoute);
+app.use("/sensors", sensorRoute);
+app.use("/logs", logRoute);
 app.use("/companies", companyRoute);
 
 // Log app errors with morgan

@@ -13,6 +13,14 @@ router.post(
   AuthController.login
 );
 
+/* GET home page. */
+router.post(
+  "/admin_login",
+  authValidation.loginValidationRules(),
+  authValidation.validate,
+  AuthController.adminLogin
+);
+
 router.post(
   "/sign-up",
   authValidation.signUpValidationRules(),
