@@ -36,28 +36,10 @@ const companySchema = new Schema(
           postalCode: {
             type: String,
             required: true
-          },
-          scheduledMaintenance: {
-            type: Date
-          },
-          sensors: {
-            type: [
-              {
-                sensorId: {
-                  type: Schema.Types.ObjectId,
-                  ref: "Sensor",
-                  required: true
-                },
-                officeLocation: {
-                  type: String,
-                  required: true
-                }
-              }
-            ],
-            required: true
           }
         }
-      ]
+      ],
+      required: true
     },
     // Prototype may not use
     paymentMethod: {
