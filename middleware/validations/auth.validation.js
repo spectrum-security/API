@@ -10,20 +10,20 @@ exports.signUpValidationRules = () => {
   return [
     // email must be an email, duh
     body("email").isEmail(),
-    body("name").optional(),
-    body("confirmPassword").isString(),
-    // password must be at least 6 chars long
-    body("password")
-      .isLength({ min: 6 })
-      .isString()
-      .custom((value, { req, loc, path }) => {
-        if (value !== req.body.confirmPassword) {
-          // trow error if passwords do not match
-          throw new Error("Passwords do not match");
-        } else {
-          return value;
-        }
-      })
+    body("name").optional()
+    // body("confirmPassword").isString(),
+    // // password must be at least 6 chars long
+    // body("password")
+    //   .isLength({ min: 6 })
+    //   .isString()
+    //   .custom((value, { req, loc, path }) => {
+    //     if (value !== req.body.confirmPassword) {
+    //       // trow error if passwords do not match
+    //       throw new Error("Passwords do not match");
+    //     } else {
+    //       return value;
+    //     }
+    //   })
   ];
 };
 

@@ -1,7 +1,8 @@
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const logger = require("morgan");
+const morgan = require("morgan");
+const logger = require("./helpers/logger");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
@@ -42,9 +43,10 @@ const usersRoute = require("./routes/user.route");
 const companyRoute = require("./routes/company.route");
 const sensorRoute = require("./routes/sensor.route");
 const logRoute = require("./routes/log.route");
+const maillingRoute = require("./routes/mailling.route");
 
 // App dependencies
-app.use(logger("dev"));
+app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -61,6 +63,7 @@ app.use("/users", usersRoute);
 app.use("/sensors", sensorRoute);
 app.use("/logs", logRoute);
 app.use("/companies", companyRoute);
+app.use("/mail", maillingRoute);
 
 // Log app errors with morgan
 process.on("uncaughtException", error => {

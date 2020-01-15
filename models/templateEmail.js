@@ -5,9 +5,11 @@ const fs = require("fs-extra");
 
 const Schema = mongoose.Schema;
 
-const getTypes = JSON.parse(fs.readFileSync("example/emailTypes.json", "utf8"));
+const getTypes = JSON.parse(
+  fs.readFileSync("./config/TemplateEmail/Types.json", "utf8")
+);
 
-const templateEmail = new Schema(
+const templateEmailSchema = new Schema(
   {
     title: String,
     type: {

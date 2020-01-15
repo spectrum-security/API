@@ -1,0 +1,22 @@
+[
+  {
+    "value": 1,
+    "label": "Payment Processed",
+    "key": "paymentProcessed"
+  },
+  {
+    "value": 2,
+    "label": "Receipt",
+    "key": "receipt"
+  },
+  {
+    "value": 3,
+    "label": "Maintenance Notice",
+    "key": "maintenanceNotice"
+  },
+  {
+    "value": 4,
+    "label": "Your Credentials",
+    "key": "yourCredentials"
+  }
+]

@@ -3,6 +3,7 @@ const msg = require("../utils/jsonMessages");
 
 module.exports = function(req, res, next) {
   passport.authenticate("jwt", function(err, user) {
+    console.log(err, user);
     if (err || !user) {
       res.status(msg.user.insufficientPermissions.status).send({
         success: msg.user.insufficientPermissions.success,
