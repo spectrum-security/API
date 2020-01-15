@@ -44,6 +44,9 @@ const userSchema = new Schema(
       required: true,
       select: false
     },
+    phone: {
+      type: Number
+    },
     // May change to userId in companies collection
     companyId: {
       type: Schema.Types.ObjectId,
