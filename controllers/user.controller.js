@@ -2,7 +2,7 @@ const User = require("../models/user");
 const msg = require("../utils/jsonMessages");
 const _ = require("lodash");
 
-exports.get = async function(req, res) {
+exports.get = async function (req, res) {
   console.log(req.query); // testing purposes
 
   try {
@@ -55,9 +55,10 @@ exports.get = async function(req, res) {
 };
 
 //Edit user
-exports.put = async function(req, res) {
+exports.put = async function (req, res) {
   try {
-    const { id, body } = req;
+    const id = req.params.id;
+    const { body } = req;
 
     User.findByIdAndUpdate(id, body, { new: true }, (err, data) => {
       if (err) {
@@ -71,7 +72,7 @@ exports.put = async function(req, res) {
 };
 
 //Remove user
-exports.del = async function(req, res) {
+exports.del = async function (req, res) {
   const _id = req.params.id;
   try {
     await User.findByIdAndDelete(_id);
