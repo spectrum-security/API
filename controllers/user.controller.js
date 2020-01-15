@@ -35,7 +35,6 @@ exports.get = async function(req, res) {
 
     // counts total users for pagination calculation in frontend
     const totalUsers = await User.countDocuments(query).lean();
-    console.log(pagination);
     const users = await User.find(query)
       .skip(pagination.skip)
       .limit(pagination.limit)
@@ -57,7 +56,8 @@ exports.get = async function(req, res) {
 //Edit user
 exports.put = async function(req, res) {
   try {
-    const { id, body } = req;
+    const id = req.params.id;
+    const { body } = req;
 
     User.findByIdAndUpdate(id, body, { new: true }, (err, data) => {
       if (err) {
