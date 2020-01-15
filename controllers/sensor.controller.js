@@ -19,6 +19,43 @@ exports.getSensors = async (req, res, next) => {
   }
 };
 
+// Get all sensors of one company company
+exports.getCompanySensorsList = async (req, res) => {
+  try {
+    const companyId = req.params.id;
+
+    // if the query params are undefined it wont paginate
+    //  returning all the documents it finds
+    const page = parseInt(req.query.page);
+    const size = parseInt(req.query.perPage);
+
+    // set skip and size of pagination query
+    const pagination = {
+      skip: size * (page - 1), // -1 because query.page starts at 1
+      limit: size
+    };
+
+    // counts total records for pagination calculation in frontend
+    const totalRecords = await SensorModel.countDocuments({
+      companyId: companyId
+    }).lean(); // lean() to set it as json and not mongo weird type
+
+    const sensorsList = await SensorModel.find({ companyId: companyId })
+      .skip(pagination.skip)
+      .limit(pagination.limit);
+
+    res.status(200).send({
+      success: true,
+      content: {
+        sensors: sensorsList
+      },
+      totalRecords: totalRecords
+    });
+  } catch (error) {
+    res.status(500).send({ success: false, message: error.message });
+  }
+};
+
 //Get sensor by id
 exports.getSensorById = async (req, res, next) => {
   try {

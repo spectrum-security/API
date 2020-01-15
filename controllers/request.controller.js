@@ -1,6 +1,7 @@
 //INCOMPLETE
 
 const Request = require("../models/request");
+const msg = require("../utils/jsonMessages");
 
 exports.getRequest = async function (req, res) {
   const request = req.query;
@@ -11,17 +12,48 @@ exports.getRequest = async function (req, res) {
     }
     //Searches mongodb for everything
     else {
-      var perPage = request.perPage
-      var page = request.page
+      // pagination vars
+      const page = parseInt(req.query.page);
+      const size = parseInt(req.query.perPage);
+      console.log(req.query.perPage);
+      const orderBy = req.query.orderBy;
+      const orderType = req.query.orderType;
+      const search = req.query.search
+        ? new RegExp(".*" + req.query.search + ".*", "i")
+        : "";
 
-      const returnedRequests = await Request.find()
-        .select('name')
-        .limit(perPage)
-        .skip(perPage * page)
-        .sort({
-          date: 'desc'
-        })
-      return res.send(returnedRequests);
+      // set skip and size of pagination query
+      const pagination = {
+        skip: size * (page - 1), // -1 because query.page starts at 1
+        limit: size
+      };
+
+      const query = {};
+      const searchForQuery = [];
+
+      // maps trought fields and  creates RegExp for find query
+      _.map(["companyId.name", "date"], el => {
+        if (req.query.search) searchForQuery.push({ [el]: search });
+      });
+
+      // defines query if search isnt empty
+      if (searchForQuery.length > 0) query.$or = searchForQuery;
+
+      // counts total requests for pagination calculation in frontend
+      const totalRequests = await Request.countDocuments(query).lean();
+      console.log(pagination);
+      const requests = await Request.find(query)
+        .skip(pagination.skip)
+        .limit(pagination.limit)
+        .sort({ [orderBy]: orderType })
+        .populate("companyId")
+        .lean();
+
+      return res.status(msg.request.getRequests.status).send({
+        totalRequests: totalRequests,
+        status: msg.request.getRequests.status,
+        success: msg.request.getRequests.success
+      });
     }
   } catch (err) {
     return res.status(400).send({ error: `Could not get: ${err}` });
@@ -91,10 +123,10 @@ exports.finishRequest = async function (req, res) {
   const _id = req.params.id;
   try {
     console.log(_id);
-    await Request.findByIdAndUpdate(_id, {finished: true}, {upsert: true}, function(err, doc) {
-      if (err) return res.send(500, {error: err});
+    await Request.findByIdAndUpdate(_id, { finished: true }, { upsert: true }, function (err, doc) {
+      if (err) return res.send(500, { error: err });
       return res.send('Succesfully saved.');
-  });
+    });
     console.log("marked as finished");
   } catch (err) {
     return res.status(400).send({ error: `Could not mark request as finished: ${err}` });
