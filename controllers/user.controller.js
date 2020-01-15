@@ -3,7 +3,7 @@ const msg = require("../utils/jsonMessages");
 const _ = require("lodash");
 
 exports.get = async function(req, res) {
-  console.log(req.query);
+  console.log(req.query); // testing purposes
 
   try {
     // pagination vars
@@ -57,18 +57,13 @@ exports.get = async function(req, res) {
 //Edit user
 exports.put = async function(req, res) {
   try {
-    console.log("edited");
-    console.log(req.params.id);
-    User.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true },
-      (err, data) => {
-        if (err) {
-          return res.status(400).send({ error: `Could not edit user: ${err}` });
-        }
+    const { id, body } = req;
+
+    User.findByIdAndUpdate(id, body, { new: true }, (err, data) => {
+      if (err) {
+        return res.status(400).send({ error: `Could not edit user: ${err}` });
       }
-    );
+    });
     return res.send("edited " + req.params.id);
   } catch (err) {
     return res.status(400).send({ error: `Could not edit user: ${err}` });
@@ -79,11 +74,17 @@ exports.put = async function(req, res) {
 exports.del = async function(req, res) {
   const _id = req.params.id;
   try {
-    console.log(_id);
     await User.findByIdAndDelete(_id);
-    console.log("removed");
-    return res.send("removed");
+    return res.status(200).send({
+      success: true,
+      message: "User deleted with success!",
+      status: 200
+    });
   } catch (err) {
-    return res.status(400).send({ error: `Could not remove user: ${err}` });
+    return res.status(400).send({
+      success: false,
+      message: `Could not remove user: ${err}`,
+      status: 400
+    });
   }
 };

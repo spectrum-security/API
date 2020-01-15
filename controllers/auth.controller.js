@@ -4,6 +4,16 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+function generatePassword() {
+  const length = 6,
+    charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+    retVal = "";
+  for (let i = 0, n = charset.length; i < length; ++i) {
+    retVal += charset.charAt(Math.floor(Math.random() * n));
+  }
+  return retVal;
+}
+
 // JWT sign user function
 function jwtSignUser(user) {
   const tempDate = new Date();
@@ -29,11 +39,10 @@ exports.signUp = async (req, res, next) => {
       name: req.body.name,
       email: req.body.email,
       userType: req.body.userType ? req.body.userType : 3,
-      password: req.body.password,
+      password: "123456", // generatePassword()
       companyId: req.body.companyId
     });
 
-    console.log("hey");
     await newUser.save();
 
     res.status(messages.user.signUpSuccess.status).json({

@@ -1,9 +1,20 @@
 const LogModel = require("../models/log");
 const msg = require("../utils/jsonMessages");
+const _ = require("lodash");
 
 exports.last7DaysLogs = async (req, res) => {
   try {
-    res.status(200).send("hey");
+    const logs = await LogModel.find({
+      createdAt: {
+        $gte: new Date(new Date().getTime() - 15 * 24 * 60 * 60 * 1000)
+      }
+    }).select("createdAt");
+
+    const splitedLogs = _.groupBy(logs, el => {
+      return el.createdAt.getDay();
+    });
+
+    res.send(splitedLogs);
   } catch (err) {
     res.send(err);
   }
