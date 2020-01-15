@@ -3,7 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "test": "jest"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -16,6 +22,7 @@
     "fs-extra": "^8.1.0",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "js-base64": "^2.5.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
@@ -29,9 +36,13 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.8.3",
+    "babel-jest": "^24.9.0",
     "chai": "^4.2.0",
     "cors": "^2.8.5",
+    "jest": "^24.9.0",
     "mocha": "^6.2.2",
+    "mongodb-memory-server": "^6.2.1",
     "supertest": "^4.0.2"
   }
 }
