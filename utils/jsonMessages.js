@@ -104,41 +104,51 @@ module.exports = {
       success: false
     }
   },
-  success(name, content) {
-    return {
-      name,
-      content,
+  request: {
+    getRequests: {
+      message:{
+        pt:"Pedidos retornados com sucesso.",
+        en:"Requests returned successfully."
+      },
       status: 200,
       success: true
-    };
   },
-  token: {
-    missing: {
-      name: "missingToken",
+},
+  success(name, content) {
+  return {
+    name,
+    content,
+    status: 200,
+    success: true
+  };
+},
+token: {
+  missing: {
+    name: "missingToken",
       message: {
-        pt: "Token necessário.",
+      pt: "Token necessário.",
         en: "Token is necessary"
-      },
-      status: 401,
-      success: false
     },
-    malformated: {
-      name: "malformatedToken",
+    status: 401,
+      success: false
+  },
+  malformated: {
+    name: "malformatedToken",
       message: {
-        pt: "Token desformatado.",
+      pt: "Token desformatado.",
         en: "Malformed Token"
-      },
-      status: 401,
-      success: false
     },
-    invalid: {
-      name: "invalidToken",
-      message: {
-        pt: "Token inválido.",
-        en: "Invalid Token"
-      },
-      status: 401,
+    status: 401,
       success: false
-    }
+  },
+  invalid: {
+    name: "invalidToken",
+      message: {
+      pt: "Token inválido.",
+        en: "Invalid Token"
+    },
+    status: 401,
+      success: false
   }
+}
 };
