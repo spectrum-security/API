@@ -2,6 +2,7 @@ const TemplateEmailModel = require("../models/templateEmail");
 const _ = require("lodash");
 const mailHelper = require("../helpers/mailHelper");
 const logger = require("../helpers/logger");
+const Handlebars = require("handlebars");
 
 exports.getTemplateEmail = async (req, res) => {
   try {
@@ -46,24 +47,25 @@ exports.getTemplateEmail = async (req, res) => {
       status: 200
     });
   } catch (err) {
-    return res.status(500).json({ success: false, message: err.message });
+    return res.status(500).send({ success: false, message: err.message });
   }
 };
 
 exports.createTemplateEmail = async (req, res) => {
   try {
     const newTemplateEmail = {
-      titulo: req.body.titulo,
-      tipo: req.body.tipo,
-      conteudo: req.body.conteudo
+      title: req.body.title,
+      type: req.body.type,
+      content: req.body.content
     };
     const template = new TemplateEmailModel(newTemplateEmail);
     await template.save();
+
     return res
       .status(201)
       .send({ success: true, message: "Template saved with success" });
   } catch (err) {
-    return res.status(500).json({ success: false, message: err.message });
+    return res.status(500).send({ success: false, message: err.message });
   }
 };
 
@@ -74,8 +76,8 @@ exports.editTemplateEmail = async (req, res) => {
 
     if (!entry)
       return res
-        .status(500)
-        .json({ success: false, message: "Template email not found" });
+        .status(404)
+        .send({ success: false, message: "Template email not found" });
 
     entry.title = req.body.title ? req.body.title : null;
     entry.type = req.body.type ? req.body.type : null;
@@ -86,7 +88,7 @@ exports.editTemplateEmail = async (req, res) => {
       .status(200)
       .send({ success: true, message: "Template email was edited" });
   } catch (err) {
-    return res.status(500).json({ success: false, message: err.message });
+    return res.status(500).send({ success: false, message: err.message });
   }
 };
 
@@ -99,11 +101,11 @@ exports.deleteTemplateEmail = async (req, res) => {
     if (!deleted)
       return res
         .status(404)
-        .json({ success: false, message: "Template email was not found" });
+        .send({ success: false, message: "Template email was not found" });
 
     return res
       .status(200)
-      .json({ success: true, message: "Template email deleted" });
+      .send({ success: true, message: "Template email deleted" });
   } catch (err) {
     return res.status(500).send({ success: false, message: err.message });
   }
@@ -112,21 +114,25 @@ exports.deleteTemplateEmail = async (req, res) => {
 exports.setDefaultTemplateEmail = async (req, res) => {
   try {
     const id = req.body._id;
-    const getTemplate = await TemplateEmailModel.findById(id).exec();
+    const getTemplate = await TemplateEmailModel.findById(id).lean();
     await TemplateEmailModel.updateMany(
-      { tipo: getTemplate.tipo },
+      { type: getTemplate.type },
       { defaultTemplate: false }
     );
 
     if (!getTemplate)
-      return res.status(500).json({ message: "Template Email not found" });
+      return res
+        .status(404)
+        .send({ success: false, message: "Template Email was not found" });
 
     getTemplate.defaultTemplate = true;
     await getTemplate.save();
 
-    return res.json({ resposta: true });
+    return res
+      .status(200)
+      .send({ success: true, message: "Template Email chosen set as default" });
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    return res.status(500).send({ success: false, message: err.message });
   }
 };
 
@@ -160,10 +166,21 @@ exports.getTemplateEmailTypes = async (req, res) => {
 };
 
 exports.sendEmailTo = async (req, res) => {
-  const { to, subject, message } = req.body;
+  const { to, subject, message, templateType, templateTitle } = req.body;
 
   try {
-    const info = await mailHelper.sendMail(to, subject, message);
+    const templateMessage = await TemplateEmailModel.findOne({
+      type: templateType,
+      title: templateTitle
+    }).lean();
+
+    const template = Handlebars.compile(templateMessage.content);
+    const test = template({
+      user: { email: "iminyourpie@gmail.com", password: "hdhshsss" }
+    });
+
+    console.log(test);
+    const info = await mailHelper.sendMail(to, subject, test);
     logger.log({
       level: "info",
       message: "EMAIL SENT =>" + JSON.stringify(info)
