@@ -5,11 +5,15 @@ const router = express.Router();
 
 router.get("/", checkAuth, TemplateEmailController.getTemplateEmail);
 
-router.post("/", checkAuth, TemplateEmailController.createTemplateEmail);
+router.post("/add", checkAuth, TemplateEmailController.createTemplateEmail);
 
-router.put("/", checkAuth, TemplateEmailController.editTemplateEmail);
+router.put("/update/:id", checkAuth, TemplateEmailController.editTemplateEmail);
 
-router.delete("/", checkAuth, TemplateEmailController.deleteTemplateEmail);
+router.delete(
+  "/delete/:id",
+  checkAuth,
+  TemplateEmailController.deleteTemplateEmail
+);
 
 router.post(
   "/set_default",
@@ -19,6 +23,6 @@ router.post(
 
 router.get("/types", checkAuth, TemplateEmailController.getTemplateEmailTypes);
 
-router.post("/send", checkAuth, TemplateEmailController.sendEmailTo);
+router.post("/send", TemplateEmailController.sendEmailTo);
 
 module.exports = router;
