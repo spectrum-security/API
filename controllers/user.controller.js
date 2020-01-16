@@ -2,6 +2,26 @@ const User = require("../models/user");
 const msg = require("../utils/jsonMessages");
 const _ = require("lodash");
 
+exports.createdLast7Days = async (req, res) => {
+  try {
+    const last7Days = new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
+    const usersCount = await User.countDocuments({
+      createdAt: {
+        $gte: last7Days
+      }
+    }).lean();
+    res.status(200).send({
+      success: true,
+      totalRecords: usersCount,
+      message: usersCount
+        ? "Number of users returned"
+        : "No users created in the last 7 days"
+    });
+  } catch (error) {
+    res.status(500).send({ success: false, message: error.message });
+  }
+};
+
 exports.get = async function(req, res) {
   console.log(req.query); // testing purposes
 

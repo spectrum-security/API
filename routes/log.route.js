@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const checkAuth = require("../middleware/checkAuth");
 
-// router.get("/last-7-days", LogController.last7DaysLogs);
+router.get("/last_7_days", LogController.last7DaysLogs);
 
 router.post("/add/:sensorId", checkAuth, LogController.addNewLog);
 
