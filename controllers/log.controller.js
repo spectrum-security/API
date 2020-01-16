@@ -3,25 +3,28 @@ const msg = require("../utils/jsonMessages");
 const _ = require("lodash");
 
 /* 
-This is a function in development and is not yet working
+This is a function in development and is not yet working as intended
 */
-// exports.last7DaysLogs = async (req, res) => {
-//   try {
-//     const logs = await LogModel.find({
-//       createdAt: {
-//         $gte: new Date(new Date().getTime() - 15 * 24 * 60 * 60 * 1000)
-//       }
-//     }).select("createdAt");
+exports.last7DaysLogs = async (req, res) => {
+  try {
+    const last7Days = new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
+    const logs = await LogModel.countDocuments({
+      createdAt: {
+        $gte: last7Days
+      }
+    }).lean();
 
-//     const splitedLogs = _.groupBy(logs, el => {
-//       return el.createdAt.getDay();
-//     });
-
-//     res.send(splitedLogs);
-//   } catch (err) {
-//     res.send(err);
-//   }
-// };
+    res.status(200).send({
+      success: true,
+      totalRecords: logs,
+      message: logs
+        ? "Number of logs returned"
+        : "No logs created in the last 7 days"
+    });
+  } catch (err) {
+    res.status(500).send({ success: false, message: err.message });
+  }
+};
 
 exports.addNewLog = async (req, res) => {
   try {

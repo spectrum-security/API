@@ -1,8 +1,14 @@
 const UserModel = require("../models/user");
+const TemplateEmailModel = require("../models/templateEmail");
+const mailHelper = require("../helpers/mailHelper");
 const messages = require("../utils/jsonMessages");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Handlebars = require("handlebars");
+const logger = require("../helpers/logger");
 require("dotenv").config();
+
+const MailHelper = require("../helpers/mailHelper");
 
 // JWT sign user function
 function jwtSignUser(user) {
@@ -29,11 +35,31 @@ exports.signUp = async (req, res, next) => {
       name: req.body.name,
       email: req.body.email,
       userType: req.body.userType ? req.body.userType : 3,
-      password: "123456", // generatePassword()
+      password: req.body.password, // from generatePassword(),
       companyId: req.body.companyId
     });
 
     await newUser.save();
+
+    const templateMessage = await TemplateEmailModel.findOne({
+      type: 4
+    }).lean();
+
+    const template = Handlebars.compile(templateMessage.content);
+    const emailToSend = template({
+      user: { email: newUser.email, password: req.body.password }
+    });
+
+    const info = await mailHelper.sendMail(
+      newUser.email,
+      templateMessage.title,
+      emailToSend
+    );
+
+    logger.log({
+      level: "info",
+      message: "EMAIL SENT =>" + JSON.stringify(info)
+    });
 
     res.status(messages.user.signUpSuccess.status).json({
       success: messages.user.signUpSuccess.success,

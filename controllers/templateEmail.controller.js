@@ -166,7 +166,14 @@ exports.getTemplateEmailTypes = async (req, res) => {
 };
 
 exports.sendEmailTo = async (req, res) => {
-  const { to, subject, message, templateType, templateTitle } = req.body;
+  const {
+    to,
+    subject,
+    message,
+    templateType,
+    templateTitle,
+    generatedPassword
+  } = req.body;
 
   try {
     const templateMessage = await TemplateEmailModel.findOne({
@@ -176,7 +183,7 @@ exports.sendEmailTo = async (req, res) => {
 
     const template = Handlebars.compile(templateMessage.content);
     const test = template({
-      user: { email: "iminyourpie@gmail.com", password: "hdhshsss" }
+      user: { email: "iminyourpie@gmail.com", password: generatedPassword }
     });
 
     console.log(test);
