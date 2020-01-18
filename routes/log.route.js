@@ -5,6 +5,8 @@ const checkAuth = require("../middleware/checkAuth");
 
 router.get("/last_7_days", LogController.last7DaysLogs);
 
-router.post("/add/:sensorId", checkAuth, LogController.addNewLog);
+router.get("/analytics", LogController.getForChart);
+
+router.post("/add/:sensorId", LogController.addNewLog);
 
 module.exports = router;

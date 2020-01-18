@@ -76,17 +76,16 @@ exports.get = async function(req, res) {
 //Edit user
 exports.put = async function(req, res) {
   try {
+    console.log(req.body);
     const id = req.params.id;
     const { body } = req;
 
-    User.findByIdAndUpdate(id, body, { new: true }, (err, data) => {
-      if (err) {
-        return res.status(400).send({ error: `Could not edit user: ${err}` });
-      }
-    });
-    return res.send("edited " + req.params.id);
+    const updateUser = await User.findByIdAndUpdate(id, body, { new: true });
+    return res
+      .status(200)
+      .send({ success: true, message: "User edited with success" });
   } catch (err) {
-    return res.status(400).send({ error: `Could not edit user: ${err}` });
+    return res.status(500).send({ error: `Could not edit user: ${err}` });
   }
 };
 

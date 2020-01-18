@@ -25,8 +25,6 @@ router.post(
 
 router.post(
   "/sign-up",
-  authValidation.signUpValidationRules(),
-  authValidation.validate,
   PasswordGenerator.generatePassword,
   AuthController.signUp,
   TemplateEmailController.sendEmailTo

@@ -3,7 +3,7 @@
 const Request = require("../models/request");
 const msg = require("../utils/jsonMessages");
 
-exports.getRequest = async function (req, res) {
+exports.getRequest = async function(req, res) {
   const request = req.query;
   try {
     //search by id
@@ -63,29 +63,29 @@ exports.getRequest = async function (req, res) {
 //Post request (INCOMPLETE)
 exports.postRequest = async (req, res, next) => {
   try {
-    if (req.params.companyId && req.params.date) {
+    if (req.params.companyId && req.body.date) {
       let newRequest = new Request({
-        companyId = req.params.companyId,
-        date = req.params.date
-      })
+        companyId: req.params.companyId,
+        date: req.body.date
+      });
 
-      console.log(newRequest)
+      console.log(newRequest);
       await newRequest.save((err, doc) => {
-        console.log("Request added successfully")
+        console.log("Request added successfully");
         if (err) {
-          res.status(500).send("Database Error")
+          res.status(500).send("Database Error");
         } else {
-          res.send(doc)
+          res.send(doc);
         }
-      })
+      });
     }
   } catch (err) {
-    return res.status(500).json({ message: err.message })
+    return res.status(500).json({ message: err.message });
   }
-}
+};
 
 //Edit request
-exports.putRequest = async function (req, res) {
+exports.putRequest = async function(req, res) {
   try {
     console.log("edited");
     console.log(req.params.id);
@@ -95,7 +95,9 @@ exports.putRequest = async function (req, res) {
       { new: true },
       (err, data) => {
         if (err) {
-          return res.status(400).send({ error: `Could not edit request: ${err}` });
+          return res
+            .status(400)
+            .send({ error: `Could not edit request: ${err}` });
         }
       }
     );
@@ -106,7 +108,7 @@ exports.putRequest = async function (req, res) {
 };
 
 //Remove request
-exports.delRequest = async function (req, res) {
+exports.delRequest = async function(req, res) {
   const _id = req.params.id;
   try {
     console.log(_id);
@@ -119,16 +121,23 @@ exports.delRequest = async function (req, res) {
 };
 
 //Mark Request as Finished
-exports.finishRequest = async function (req, res) {
+exports.finishRequest = async function(req, res) {
   const _id = req.params.id;
   try {
     console.log(_id);
-    await Request.findByIdAndUpdate(_id, { finished: true }, { upsert: true }, function (err, doc) {
-      if (err) return res.send(500, { error: err });
-      return res.send('Succesfully saved.');
-    });
+    await Request.findByIdAndUpdate(
+      _id,
+      { finished: true },
+      { upsert: true },
+      function(err, doc) {
+        if (err) return res.send(500, { error: err });
+        return res.send("Succesfully saved.");
+      }
+    );
     console.log("marked as finished");
   } catch (err) {
-    return res.status(400).send({ error: `Could not mark request as finished: ${err}` });
+    return res
+      .status(400)
+      .send({ error: `Could not mark request as finished: ${err}` });
   }
 };
