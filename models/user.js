@@ -47,13 +47,15 @@ const userSchema = new Schema(
     phone: {
       type: Number
     },
-    // May change to userId in companies collection
     companyId: {
       type: Schema.Types.ObjectId,
       ref: "Company"
     },
+    avatar: {
+      type: String
+    },
     fingerprint: {
-      type: String // Will be a string of the path to the file system
+      type: String
     }
   },
   {

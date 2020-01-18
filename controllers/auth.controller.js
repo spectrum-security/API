@@ -8,8 +8,6 @@ const Handlebars = require("handlebars");
 const logger = require("../helpers/logger");
 require("dotenv").config();
 
-const MailHelper = require("../helpers/mailHelper");
-
 // JWT sign user function
 function jwtSignUser(user) {
   const tempDate = new Date();
@@ -31,15 +29,17 @@ exports.getMe = async (req, res, next) => {
 
 exports.signUp = async (req, res, next) => {
   try {
+    console.log(req.body);
     let newUser = new UserModel({
       name: req.body.name,
       email: req.body.email,
       userType: req.body.userType ? req.body.userType : 3,
       password: req.body.password, // from generatePassword(),
-      companyId: req.body.companyId
+      companyId: req.body.companyId,
+      avatar: req.body.avatar ? req.body.avatar : null
     });
 
-    await newUser.save();
+    const user = await newUser.save();
 
     const templateMessage = await TemplateEmailModel.findOne({
       type: 4
@@ -63,7 +63,10 @@ exports.signUp = async (req, res, next) => {
 
     res.status(messages.user.signUpSuccess.status).json({
       success: messages.user.signUpSuccess.success,
-      message: messages.user.signUpSuccess.message
+      message: messages.user.signUpSuccess.message,
+      conten: {
+        userId: user._id
+      }
     });
   } catch (error) {
     console.log(error);

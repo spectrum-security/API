@@ -25,7 +25,7 @@ exports.getTemplateEmail = async (req, res) => {
     const searchForQuery = [];
 
     // maps trought fields and  creates RegExp for find query
-    _.map(["title", "type"], el => {
+    _.map(["title"], el => {
       if (req.query.search) searchForQuery.push({ [el]: search });
     });
 
@@ -94,7 +94,7 @@ exports.editTemplateEmail = async (req, res) => {
 
 exports.deleteTemplateEmail = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
 
     const deleted = await TemplateEmailModel.findOneAndDelete({ _id: id });
 
