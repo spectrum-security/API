@@ -14,6 +14,9 @@ exports.createdLast7Days = async (req, res, next) => {
     const query = {
       createdAt: {
         $gte: last7Days
+      },
+      email: {
+        $exists: true
       }
     };
 
@@ -27,6 +30,46 @@ exports.createdLast7Days = async (req, res, next) => {
       message: emailsCount
         ? "Number of emails returned"
         : "No emails received in the last 7 days"
+    });
+  } catch (error) {
+    res.status(500).send({ success: false, message: error.message });
+  }
+};
+
+exports.getInbox = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page);
+    const size = parseInt(req.query.perPage) || 5;
+    const sort = req.query.orderBy
+      ? { [req.query.orderType]: req.query.orderType }
+      : null;
+
+    const pagination = {
+      skip: size * (page - 1),
+      limit: size
+    };
+
+    const query = {};
+    const search = [];
+
+    if (req.query.from)
+      search.push({
+        from: { email: new RegExp(".*" + req.query.hostname + ".*", "i") }
+      });
+
+    if (search.length > 0) query.$and = search;
+
+    const totalRecords = await RecEmailModel.countDocuments(query).lean();
+    const inbox = await RecEmailModel.find(query, {}, pagination)
+      .sort(sort)
+      .lean();
+
+    return res.status(200).send({
+      success: true,
+      totalRecords: Math.ceil(totalRecords / size),
+      content: {
+        inbox: inbox
+      }
     });
   } catch (error) {
     res.status(500).send({ success: false, message: error.message });

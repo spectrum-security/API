@@ -100,3 +100,25 @@
 {"level":"info","message":"SAVED RECEIVED EMAIL =>{\"_id\":\"5e2451fb7e6390378cd78e6e\",\"title\":\"Re: Welcome to Spectrum Security, here are your credentials!\",\"text\":\"Oi!\\n\\nA domingo, 19 de jan de 2020, 12:55,  escreveu:\\n\\n> Thank you for signing up to *Spectrum Security*!\\n>\\n> From now on, your office will be much safer! Just login using the\\n> credentials below and we'll take it from there!\\n>\\n>\\n>\\n>    - *E-mail: *saraimonteiro18@gmail.com\\n>    - *Password: *5ihaCN\\n>\\n>\\n>\\n> For more information, please contact us or visit our website.\\n>\\n>\\n>\\n> Sincerely,\\n>\\n> Spectrum Security Team\\n>\\n\",\"createdAt\":\"2020-01-19T12:56:27.072Z\",\"updatedAt\":\"2020-01-19T12:56:27.072Z\",\"__v\":0}"}
 {"level":"info","message":"SAVED RECEIVED EMAIL =>{\"_id\":\"5e2452737e6390378cd78e6f\",\"title\":\"Coisas\",\"text\":\"dsadasdadsasd\\n\",\"createdAt\":\"2020-01-19T12:58:27.363Z\",\"updatedAt\":\"2020-01-19T12:58:27.363Z\",\"__v\":0}"}
 {"level":"info","message":"EMAIL SENT =>{\"accepted\":[\"bernardo.caiano@outlook.pt\"],\"rejected\":[],\"envelopeTime\":489,\"messageTime\":833,\"messageSize\":806,\"response\":\"250 2.0.0 OK  1579446928 d12sm44475979wrp.62 - gsmtp\",\"envelope\":{\"from\":\"esmad.spectrum@gmail.com\",\"to\":[\"bernardo.caiano@outlook.pt\"]},\"messageId\":\"<cee133f6-ae8d-b6da-7448-a7d7709259b5@gmail.com>\"}"}
+{"level":"error","message":{"errno":"ECONNRESET","code":"ECONNRESET","syscall":"write","source":"socket"}}
+{"level":"error","message":{"errno":"ECONNRESET","code":"ECONNRESET","syscall":"write","source":"socket"}}
+{"level":"error","message":"Error: write ECONNRESET\n    at WriteWrap.onWriteComplete [as oncomplete] (internal/stream_base_commons.js:87:16)\n    at JSStreamSocket.finishWrite (internal/js_stream_socket.js:196:12)\n    at Immediate.<anonymous> (internal/js_stream_socket.js:181:14)\n    at processImmediate (internal/timers.js:439:21)"}
+{"level":"info","message":"SAVED RECEIVED EMAIL =>{\"_id\":\"5e24b436f3def4061eff8ff1\",\"title\":\"Hello there.\",\"text\":\"General Kenobi!\\n\",\"createdAt\":\"2020-01-19T19:55:34.344Z\",\"updatedAt\":\"2020-01-19T19:55:34.344Z\",\"__v\":0}"}
+{"level":"info","message":"SAVED RECEIVED EMAIL =>{\"_id\":\"5e24b4e0f3def4061eff8ff2\",\"title\":\"test\",\"text\":\"sasdsad\\n\",\"createdAt\":\"2020-01-19T19:58:24.706Z\",\"updatedAt\":\"2020-01-19T19:58:24.706Z\",\"__v\":0}"}
+{"level":"info","message":"SAVED RECEIVED EMAIL =>{\"_id\":\"5e24b569711f8d7bd9bebbcd\",\"title\":\"Re: test\",\"text\":\"sadsad\\n\\nOn Sun, Jan 19, 2020 at 7:58 PM Miguel Melo  wrote:\\n\\n> sasdsad\\n>\\n\",\"createdAt\":\"2020-01-19T20:00:41.189Z\",\"updatedAt\":\"2020-01-19T20:00:41.189Z\",\"__v\":0}"}
+{"level":"info","message":"SAVED RECEIVED EMAIL =>{\"_id\":\"5e24bf7e99bd9d7764729f68\",\"title\":\"231322\",\"text\":\"312312323\\n\",\"createdAt\":\"2020-01-19T20:43:42.391Z\",\"updatedAt\":\"2020-01-19T20:43:42.391Z\",\"__v\":0}"}
+{"level":"info","message":"SAVED RECEIVED EMAIL =>{\"_id\":\"5e24bfa9b96bdc8f9ab6a522\",\"title\":\"asdasd\",\"text\":\"dasdasdas\\n\",\"createdAt\":\"2020-01-19T20:44:25.673Z\",\"updatedAt\":\"2020-01-19T20:44:25.673Z\",\"__v\":0}"}
+{"level":"info","message":"SAVED RECEIVED EMAIL =>{\"_id\":\"5e24c07e50d58fad994aba7c\",\"title\":\"sdaada\",\"text\":\"sdasdasda\\n\",\"createdAt\":\"2020-01-19T20:47:58.607Z\",\"updatedAt\":\"2020-01-19T20:47:58.607Z\",\"__v\":0}"}
+{"level":"info","message":"SAVED RECEIVED EMAIL =>{\"_id\":\"5e24c10d1839e4ebecd0b2eb\"}"}
+{"level":"error","message":{}}
+{"level":"info","message":"SAVED RECEIVED EMAIL =>{\"title\":\"Wadup\",\"name\":\"Miguel Melo\",\"email\":\"iminyourpie@gmail.com\",\"text\":\"hey\\n\"}"}
+{"level":"info","message":"SAVED RECEIVED EMAIL =>{\"title\":\"dsdads\",\"name\":\"Miguel Melo\",\"email\":\"iminyourpie@gmail.com\",\"text\":\"sdaasdasd\\n\"}"}
+{"level":"info","message":"SAVED RECEIVED EMAIL =>{\"title\":\"sda\",\"name\":\"Miguel Melo\",\"email\":\"iminyourpie@gmail.com\",\"text\":\"sdadsd\\n\"}"}
+{"level":"info","message":"SAVED RECEIVED EMAIL =>{\"title\":\"sdas\",\"name\":\"Miguel Melo\",\"email\":\"iminyourpie@gmail.com\",\"text\":\"dsad\\n\"}"}
+{"level":"info","message":"SAVED RECEIVED EMAIL =>iminyourpie@gmail.com"}
+{"level":"info","message":"SAVED RECEIVED EMAIL => ok"}
+{"level":"info","message":"SAVED RECEIVED EMAIL => ok"}
+{"level":"info","message":"SAVED RECEIVED EMAIL => ok"}
+{"level":"info","message":"SAVED RECEIVED EMAIL => ok"}
+{"level":"info","message":"SAVED RECEIVED EMAIL => ok"}
+{"level":"info","message":"SAVED RECEIVED EMAIL => ok"}
