@@ -1,5 +1,5 @@
 //INCOMPLETE
-
+const _ = require("lodash");
 const Request = require("../models/request");
 const msg = require("../utils/jsonMessages");
 
@@ -52,6 +52,7 @@ exports.getRequest = async function(req, res) {
       return res.status(msg.request.getRequests.status).send({
         totalRequests: totalRequests,
         status: msg.request.getRequests.status,
+        content: { requests: requests },
         success: msg.request.getRequests.success
       });
     }
