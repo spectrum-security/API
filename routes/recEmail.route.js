@@ -1,12 +1,14 @@
-const RecEmailConfigController = require("../controllers/recEmail.controller");
+const RecEmailController = require("../controllers/recEmail.controller");
 const checkAuth = require("../middleware/checkAuth");
 const express = require("express");
 const router = express.Router();
 
-router.get("/", RecEmailConfigController.getRecEmailConfig);
+router.get("/", RecEmailController.getRecEmailConfig);
 
-router.post("/", RecEmailConfigController.createRecEmailConfig);
+router.get("/last_7_days", RecEmailController.createdLast7Days);
 
-router.delete("/", RecEmailConfigController.deleteRecEmailConfig);
+router.post("/", RecEmailController.createRecEmailConfig);
+
+router.delete("/", RecEmailController.deleteRecEmailConfig);
 
 module.exports = router;

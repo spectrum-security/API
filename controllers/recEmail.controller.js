@@ -1,5 +1,29 @@
 const RecEmailConfigModel = require("../models/emailConfig");
+const RecEmailModel = require("../models/receivedMail");
 const Base64 = require("js-base64").Base64;
+const moment = require("moment");
+
+exports.createdLast7Days = async (req, res, next) => {
+  try {
+    const last7Days = moment()
+      .subtract(6, "day")
+      .toDate();
+    const emailsCount = await RecEmailModel.countDocuments({
+      createdAt: {
+        $gte: last7Days
+      }
+    }).lean();
+    res.status(200).send({
+      success: true,
+      totalRecords: emailsCount,
+      message: emailsCount
+        ? "Number of emails returned"
+        : "No emails received in the last 7 days"
+    });
+  } catch (error) {
+    res.status(500).send({ success: false, message: error.message });
+  }
+};
 
 exports.getRecEmailConfig = async (req, res) => {
   try {

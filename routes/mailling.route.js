@@ -5,6 +5,8 @@ const router = express.Router();
 
 router.get("/", checkAuth, TemplateEmailController.getTemplateEmail);
 
+router.get("/last_7_days", checkAuth, TemplateEmailController.sentLast7Days);
+
 router.post("/add", checkAuth, TemplateEmailController.createTemplateEmail);
 
 router.put("/update/:id", checkAuth, TemplateEmailController.editTemplateEmail);

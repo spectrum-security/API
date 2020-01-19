@@ -1,8 +1,32 @@
 const TemplateEmailModel = require("../models/templateEmail");
+const SentEmailModel = require("../models/sentEmail");
 const _ = require("lodash");
 const mailHelper = require("../helpers/mailHelper");
 const logger = require("../helpers/logger");
 const Handlebars = require("handlebars");
+const moment = require("moment");
+
+exports.sentLast7Days = async (req, res, next) => {
+  try {
+    const last7Days = moment()
+      .subtract(6, "day")
+      .toDate();
+    const sentEmailCount = await SentEmailModel.countDocuments({
+      createdAt: {
+        $gte: last7Days
+      }
+    }).lean();
+    res.status(200).send({
+      success: true,
+      totalRecords: sentEmailCount,
+      message: sentEmailCount
+        ? "Number of emails returned"
+        : "No emails sent in the last 7 days"
+    });
+  } catch (error) {
+    res.status(500).send({ success: false, message: error.message });
+  }
+};
 
 exports.getTemplateEmail = async (req, res) => {
   try {
@@ -166,14 +190,7 @@ exports.getTemplateEmailTypes = async (req, res) => {
 };
 
 exports.sendEmailTo = async (req, res) => {
-  const {
-    to,
-    subject,
-    message,
-    templateType,
-    templateTitle,
-    generatedPassword
-  } = req.body;
+  const { to, subject, templateType, templateTitle } = req.body;
 
   try {
     const templateMessage = await TemplateEmailModel.findOne({
@@ -182,9 +199,13 @@ exports.sendEmailTo = async (req, res) => {
     }).lean();
 
     const template = Handlebars.compile(templateMessage.content);
-    const test = template({
-      user: { email: "iminyourpie@gmail.com", password: generatedPassword }
-    });
+
+    // const test = template({
+    //   user: { email: to, password: generatedPassword }
+    // });
+
+    // MAP TROUGHT ALL EL AND FILL THEM
+    // _.map()
 
     console.log(test);
     const info = await mailHelper.sendMail(to, subject, test);

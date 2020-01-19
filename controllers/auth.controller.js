@@ -1,5 +1,6 @@
 const UserModel = require("../models/user");
 const TemplateEmailModel = require("../models/templateEmail");
+const SentEmailModel = require("../models/sentEmail");
 const mailHelper = require("../helpers/mailHelper");
 const messages = require("../utils/jsonMessages");
 const bcrypt = require("bcryptjs");
@@ -55,6 +56,14 @@ exports.signUp = async (req, res, next) => {
       templateMessage.title,
       emailToSend
     );
+
+    const sentEmail = new SentEmailModel({
+      to: newUser.email,
+      title: templateMessage.title,
+      text: emailToSend
+    });
+
+    await sentEmail.save();
 
     logger.log({
       level: "info",
