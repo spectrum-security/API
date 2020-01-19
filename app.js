@@ -17,17 +17,12 @@ require("./config/passport");
 
 const config = require("./config/db.config");
 
-mongoose.connect(
-  process.env.NODE_ENV === "development"
-    ? config.testDatabase
-    : config.database,
-  {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true
-  }
-);
+mongoose.connect(config.testDatabase, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true
+});
 
 let db = mongoose.connection;
 
