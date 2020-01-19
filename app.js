@@ -66,7 +66,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/storage", express.static("storage"));
 
 // Set port
-app.set("port", process.env.PORT || 3000);
+app.listen(app.get("port"));
 
 // Set routes
 app.use("/", indexRoute);
