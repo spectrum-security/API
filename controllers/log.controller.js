@@ -12,7 +12,9 @@ This is a function in development and is not yet working as intended
 */
 exports.last7DaysLogs = async (req, res) => {
   try {
-    const last7Days = new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
+    const last7Days = moment()
+      .subtract(7, "day")
+      .toDate();
     const logs = await LogModel.countDocuments({
       createdAt: {
         $gte: last7Days
@@ -36,6 +38,7 @@ exports.getForChart = async (req, res, next) => {
     const sevenDaysAgo = moment()
       .subtract(7, "day")
       .toDate();
+    console.log(sevenDaysAgo);
     const logs = await LogModel.find({
       createdAt: {
         $gte: sevenDaysAgo
@@ -54,6 +57,7 @@ exports.getForChart = async (req, res, next) => {
     );
 
     range = Array.from(range.by("day"));
+    console.log(range);
     range = range.map(el => (el = { date: el, count: 0 }));
 
     // 0(n^2) didn't find anaother way

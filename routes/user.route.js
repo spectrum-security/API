@@ -7,6 +7,8 @@ router.get("/", checkAuth, controller.get);
 
 router.get("/created/last_7_days", controller.createdLast7Days);
 
+router.get("/analytics", controller.getForChart);
+
 router.put("/:id", controller.put);
 router.delete("/:id", controller.del);
 

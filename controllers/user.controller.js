@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const msg = require("../utils/jsonMessages");
 const _ = require("lodash");
+const moment = require("moment");
 
 exports.createdLast7Days = async (req, res) => {
   try {
@@ -16,6 +17,54 @@ exports.createdLast7Days = async (req, res) => {
       message: usersCount
         ? "Number of users returned"
         : "No users created in the last 7 days"
+    });
+  } catch (error) {
+    res.status(500).send({ success: false, message: error.message });
+  }
+};
+
+exports.getForChart = async (req, res, next) => {
+  try {
+    const sevenDaysAgo = moment()
+      .subtract(7, "day")
+      .toDate();
+    const users = await User.find({
+      createdAt: {
+        $gte: sevenDaysAgo
+      }
+    })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    const lastRecord = users[0];
+
+    let range = moment.range(
+      moment()
+        .subtract(6, "day")
+        .toDate(),
+      moment()
+    );
+
+    range = Array.from(range.by("day"));
+    range = range.map(el => (el = { date: el, count: 0 }));
+
+    // 0(n^2) didn't find anaother way
+    for (let i = 0; i < range.length; i++) {
+      let rangeDate = moment(range[i].date).format("YYYY-MM-DD");
+      for (let j = 0; j < users.length; j++) {
+        let date = moment(users[j].createdAt).format("YYYY-MM-DD");
+        if (date === rangeDate) {
+          range[i].count += 1;
+        }
+      }
+    }
+
+    range = range.map(el => el.count);
+
+    res.status(200).send({
+      success: true,
+      content: { range: range, lastRecord: lastRecord },
+      message: "Data analytics for users returned"
     });
   } catch (error) {
     res.status(500).send({ success: false, message: error.message });
