@@ -26,7 +26,7 @@ const emailConfig = new Schema({
   }
 });
 
-emailConfig.pre("save", next => {
+emailConfig.pre("save", function(next) {
   if (this.isNew || this.isModified("password")) {
     const document = this;
     document.password = Base64.encode(document.password);

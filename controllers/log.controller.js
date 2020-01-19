@@ -13,7 +13,7 @@ This is a function in development and is not yet working as intended
 exports.last7DaysLogs = async (req, res) => {
   try {
     const last7Days = moment()
-      .subtract(7, "day")
+      .subtract(6, "day")
       .toDate();
     const logs = await LogModel.countDocuments({
       createdAt: {
