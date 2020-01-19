@@ -46,22 +46,23 @@ exports.createRecEmailConfig = async (req, res) => {
 
     if (!getRecEmailConfig) {
       getRecEmailConfig = new RecEmailConfigModel();
+
+      getRecEmailConfig.user = req.body.user;
+      getRecEmailConfig.password = req.body.password;
+      getRecEmailConfig.host = req.body.host;
+      getRecEmailConfig.port = req.body.port;
+      getRecEmailConfig.tls = req.body.tls;
+
+      await getRecEmailConfig.save();
+
+      global.mailListenerWrapper.close(); // force close to initiate with new variables
+      global.mailListenerWrapper.init(); // init now with new variables
+
+      return res.status(200).send({
+        success: true,
+        message: "IMAP was updated and is now listening"
+      });
     }
-    getRecEmailConfig.user = req.body.user;
-    getRecEmailConfig.password = req.body.password;
-    getRecEmailConfig.host = req.body.host;
-    getRecEmailConfig.port = req.body.port;
-    getRecEmailConfig.tls = req.body.tls;
-
-    await getRecEmailConfig.save();
-
-    global.mailListenerWrapper.close(); // force close to initiate with new variables
-    global.mailListenerWrapper.init(); // init now with new variables
-
-    return res.status(200).send({
-      success: true,
-      message: "IMAP was updated and is now listening"
-    });
   } catch (error) {
     return res.status(500).send({ success: false, message: error.message });
   }
