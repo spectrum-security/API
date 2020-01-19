@@ -11,6 +11,8 @@ const bodyParser = require("body-parser");
 
 require("dotenv").config();
 
+const mailListenerWrapper = require("./mailListenerWrapper");
+
 require("./config/passport");
 
 const config = require("./config/db.config");
@@ -43,6 +45,8 @@ db.on("error", err => {
 
 const app = express();
 
+global.mailListenerWrapper = new mailListenerWrapper();
+
 // Routes
 const indexRoute = require("./routes/index.route");
 const authRoute = require("./routes/auth.route");
@@ -53,10 +57,11 @@ const logRoute = require("./routes/log.route");
 const maillingRoute = require("./routes/mailling.route");
 const requestRoute = require("./routes/request.route");
 const fileRoute = require("./routes/file.route");
+const recEmailRoute = require("./routes/recEmail.route");
 
 // App dependencies
 app.use(morgan("dev"));
-app.use(cors());
+app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: false }));
@@ -78,6 +83,7 @@ app.use("/companies", companyRoute);
 app.use("/mail", maillingRoute);
 app.use("/request", requestRoute);
 app.use("/file", fileRoute);
+app.use("/rec_email", recEmailRoute);
 
 // couldnt find a way to set it up as REST
 app.get("/files/image/:filename", async (req, res, next) => {

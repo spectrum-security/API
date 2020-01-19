@@ -5,7 +5,9 @@ const moment = require("moment");
 
 exports.createdLast7Days = async (req, res) => {
   try {
-    const last7Days = new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
+    const last7Days = moment()
+      .subtract(6, "day")
+      .toDate();
     const usersCount = await User.countDocuments({
       createdAt: {
         $gte: last7Days
