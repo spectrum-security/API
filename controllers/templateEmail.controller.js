@@ -8,14 +8,23 @@ const moment = require("moment");
 
 exports.sentLast7Days = async (req, res, next) => {
   try {
+    const companyId = req.query.companyId ? req.query.companyId : null;
+
     const last7Days = moment()
       .subtract(6, "day")
       .toDate();
-    const sentEmailCount = await SentEmailModel.countDocuments({
+
+    const query = {
       createdAt: {
         $gte: last7Days
       }
-    }).lean();
+    };
+
+    if (companyId !== null) {
+      query.companyId = companyId;
+    }
+
+    const sentEmailCount = await SentEmailModel.countDocuments(query).lean();
     res.status(200).send({
       success: true,
       totalRecords: sentEmailCount,

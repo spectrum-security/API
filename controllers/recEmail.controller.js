@@ -5,14 +5,22 @@ const moment = require("moment");
 
 exports.createdLast7Days = async (req, res, next) => {
   try {
+    const companyId = req.query.companyId ? req.query.companyId : null;
+
     const last7Days = moment()
       .subtract(6, "day")
       .toDate();
-    const emailsCount = await RecEmailModel.countDocuments({
+
+    const query = {
       createdAt: {
         $gte: last7Days
       }
-    }).lean();
+    };
+
+    if (companyId !== null) {
+      query.companyId = companyId;
+    }
+    const emailsCount = await RecEmailModel.countDocuments(query).lean();
     res.status(200).send({
       success: true,
       totalRecords: emailsCount,

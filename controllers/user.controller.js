@@ -5,14 +5,23 @@ const moment = require("moment");
 
 exports.createdLast7Days = async (req, res) => {
   try {
+    const companyId = req.query.companyId ? req.query.companyId : null;
+
     const last7Days = moment()
       .subtract(6, "day")
       .toDate();
-    const usersCount = await User.countDocuments({
+
+    const query = {
       createdAt: {
         $gte: last7Days
       }
-    }).lean();
+    };
+
+    if (companyId !== null) {
+      query.companyId = companyId;
+    }
+
+    const usersCount = await User.countDocuments(query).lean();
     res.status(200).send({
       success: true,
       totalRecords: usersCount,

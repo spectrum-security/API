@@ -12,14 +12,23 @@ This is a function in development and is not yet working as intended
 */
 exports.last7DaysLogs = async (req, res) => {
   try {
+    const companyId = req.query.companyId ? req.query.companyId : null;
+
     const last7Days = moment()
       .subtract(6, "day")
       .toDate();
-    const logs = await LogModel.countDocuments({
+
+    const query = {
       createdAt: {
         $gte: last7Days
       }
-    }).lean();
+    };
+
+    if (companyId !== null) {
+      query.companyId = companyId;
+    }
+
+    const logs = await LogModel.countDocuments(query).lean();
 
     res.status(200).send({
       success: true,
@@ -78,6 +87,17 @@ exports.getForChart = async (req, res, next) => {
       content: { range: range, lastRecord: lastRecord },
       message: "Data analytics for logs returned"
     });
+  } catch (error) {
+    res.status(500).send({ success: false, message: error.message });
+  }
+};
+
+exports.getLogs = async (req, res, next) => {
+  try {
+    const companyId = req.params.companyId ? req.params.companyId : null;
+
+    const logs = await LogModel.find({ companyId: companyId }).lean();
+    res.status(200).send({ success: true, content: { logs: logs } });
   } catch (error) {
     res.status(500).send({ success: false, message: error.message });
   }
