@@ -53,6 +53,7 @@ const maillingRoute = require("./routes/mailling.route");
 const requestRoute = require("./routes/request.route");
 const fileRoute = require("./routes/file.route");
 const recEmailRoute = require("./routes/recEmail.route");
+const blacklistRoute = require("./routes/blacklist.route");
 
 // App dependencies
 app.use(morgan("dev"));
@@ -79,6 +80,7 @@ app.use("/mail", maillingRoute);
 app.use("/request", requestRoute);
 app.use("/file", fileRoute);
 app.use("/rec_email", recEmailRoute);
+app.use("/blacklist", blacklistRoute);
 
 // couldnt find a way to set it up as REST
 app.get("/files/image/:filename", async (req, res, next) => {

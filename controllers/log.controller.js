@@ -47,7 +47,6 @@ exports.getForChart = async (req, res, next) => {
     const sevenDaysAgo = moment()
       .subtract(7, "day")
       .toDate();
-    console.log(sevenDaysAgo);
     const logs = await LogModel.find({
       createdAt: {
         $gte: sevenDaysAgo
@@ -66,7 +65,6 @@ exports.getForChart = async (req, res, next) => {
     );
 
     range = Array.from(range.by("day"));
-    console.log(range);
     range = range.map(el => (el = { date: el, count: 0 }));
 
     // 0(n^2) didn't find anaother way

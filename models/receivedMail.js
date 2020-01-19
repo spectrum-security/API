@@ -7,16 +7,10 @@ const Schema = mongoose.Schema;
 const receivedMailSchema = new Schema(
   {
     title: {
-      type: String,
-      required: true
+      type: String
     },
-    from: {
-      name: {
-        type: String
-      },
-      email: {
-        type: String
-      }
+    email: {
+      type: String
     },
     text: {
       type: String

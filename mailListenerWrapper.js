@@ -1,7 +1,5 @@
 const simpleParser = require("mailparser").simpleParser;
-const fs = require("fs-extra");
 const Imap = require("imap");
-const moment = require("moment");
 const striptags = require("striptags");
 const BlackListModel = require("./models/blacklist");
 const RecEmailConfigModel = require("./models/emailConfig");
@@ -9,7 +7,6 @@ const ReceivedEmailModel = require("./models/receivedMail");
 const Base64 = require("js-base64").Base64;
 const _ = require("lodash");
 const logger = require("./helpers/logger");
-const mongoose = require("mongoose");
 require("dotenv").config();
 
 class MailListenerWrapper {
@@ -21,6 +18,7 @@ class MailListenerWrapper {
   async init() {
     try {
       const getRecEmailConfig = await RecEmailConfigModel.findOne({});
+      let savedEmail;
 
       if (getRecEmailConfig) {
         getRecEmailConfig.password = Base64.decode(getRecEmailConfig.password);
@@ -64,7 +62,7 @@ class MailListenerWrapper {
               struct: true
             });
 
-            f.on("message", msg => {
+            f.on("message", async msg => {
               msg.on("body", async stream => {
                 try {
                   const parsed = await simpleParser(stream);
@@ -72,9 +70,9 @@ class MailListenerWrapper {
                     // ################ HEADER ################ \\
                     newEmail.title = parsed.headers.get("subject");
                     const getFrom = parsed.headers.get("from").text.split(" <");
+                    console.log(getFrom);
 
                     if (getFrom.length === 2) {
-                      newEmail.name = getFrom[0];
                       newEmail.email = getFrom[1].match(regEmail).join("\n");
                     }
                     // ################ HEADER ################ \\
@@ -84,12 +82,7 @@ class MailListenerWrapper {
                     newEmail.text = striptags(parsed.text).toString("utf8");
                     // ################ TEXT ################ \\
                   }
-                  if (
-                    newEmail.name &&
-                    newEmail.email &&
-                    newEmail.title &&
-                    newEmail.text
-                  ) {
+                  if (newEmail.email && newEmail.title && newEmail.text) {
                     const getEmailHostname = newEmail.email.replace(/.*@/, "");
                     const blacklists = await BlackListModel.find({
                       hostname: new RegExp(".*" + getEmailHostname + ".*", "i")
@@ -102,15 +95,14 @@ class MailListenerWrapper {
                       });
                       return false;
                     }
-
-                    const savedEmail = new ReceivedEmailModel(newEmail);
-                    await savedEmail.save();
-
+                    console.log(newEmail);
+                    savedEmail = new ReceivedEmailModel(newEmail);
                     logger.log({
                       level: "info",
-                      message:
-                        "SAVED RECEIVED EMAIL =>" + JSON.stringify(savedEmail)
+                      message: "SAVED RECEIVED EMAIL => ok"
                     });
+                    await savedEmail.save();
+                    return;
                   }
                 } catch (err) {
                   logger.log({ level: "error", message: err });
