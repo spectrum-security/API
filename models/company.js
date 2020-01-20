@@ -16,26 +16,22 @@ const companySchema = new Schema(
     },
     phoneContacts: {
       main: {
-        type: Number,
-        required: true
+        type: Number
       },
       others: [Number]
     },
     points: {
       type: Number,
-      default: 0,
-      required: true
+      default: 0
     },
     offices: {
       type: [
         {
           location: {
-            type: String,
-            required: true
+            type: String
           },
           postalCode: {
-            type: String,
-            required: true
+            type: String
           }
         }
       ],

@@ -82,7 +82,7 @@ app.use("/file", fileRoute);
 app.use("/rec_email", recEmailRoute);
 app.use("/blacklist", blacklistRoute);
 
-// couldnt find a way to set it up as REST
+// couldnt find a way to set it up as route with controller
 app.get("/files/image/:filename", async (req, res, next) => {
   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
     if (!file || file.length === 0) {
