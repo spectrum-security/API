@@ -49,7 +49,11 @@ exports.getInbox = async (req, res) => {
       limit: size
     };
 
-    const query = {};
+    const query = {
+      email: {
+        $exists: true
+      }
+    };
     const search = [];
 
     if (req.query.from)
