@@ -110,5 +110,5 @@ process.on("uncaughtException", error => {
 });
 
 // listens to arduino port
-require("./controllers/arduino.controller")
+require("./controllers/arduino.controller").listenForData()
 module.exports = app;

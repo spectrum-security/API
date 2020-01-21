@@ -1,5 +1,5 @@
 const SensorModel = require("../models/sensor.js");
-
+const port = require("./arduino.controller").port
 //Get All sensors
 exports.getSensors = async (req, res, next) => {
   try {
@@ -130,3 +130,42 @@ exports.updateSensor = async (req, res, next) => {
     return res.status(500).json({ message: err.message });
   }
 };
+
+exports.changeActive = async (req, res, next) => {
+  try {
+    const sensor = await SensorModel.findById(req.params.id)
+    if (!sensor)
+      return res
+        .status(404)
+        .send("The sensor with the given ID was not found.");
+    if (sensor.active) {
+      port.write(`${sensor.id} off`, async (err) => {
+        if (err) {
+          console.log(err)
+        } else {
+          sensor.active = false
+          await sensor.save()
+          return res.status(200).send({
+            success: true,
+            content: { sensor }
+          })
+        }
+      })
+    } else {
+      port.write(`${sensor.id} on`, async (err) => {
+        if (err) {
+          console.log(err)
+        } else {
+          sensor.active = true
+          await sensor.save()
+          return res.status(200).send({
+            success: true,
+            content: { sensor }
+          })
+        }
+      })
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+}
