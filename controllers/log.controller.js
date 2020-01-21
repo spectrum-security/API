@@ -15,7 +15,7 @@ exports.last7DaysLogs = async (req, res) => {
     const companyId = req.query.companyId ? req.query.companyId : null;
 
     const last7Days = moment()
-      .subtract(6, "day")
+      .subtract(7, "day")
       .toDate();
 
     const query = {

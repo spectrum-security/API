@@ -1,20 +1,47 @@
 const CompanyModel = require("../models/company");
 const messages = require("../utils/jsonMessages");
+const _ = require("lodash");
 
 //Get a specific company from the database by name
-exports.getCompany = async (req, res, next) => {
+exports.getCompanies = async (req, res, next) => {
   try {
-    console.log(req.body);
-    //const company = await CompanyModel.findOne({name: req.body.name})
-    const company = await CompanyModel.find().populate("mainAdmin");
-    console.log(company);
+    // pagination vars
+    const page = parseInt(req.query.page);
+    const size = parseInt(req.query.perPage);
+    const search = new RegExp(".*" + req.query.search + ".*", "i");
 
-    if (!company) return res.status(404).json({ message: err.message });
-    return res.status(200).json({
-      company: company
+    const pagination = {
+      skip: size * (page - 1),
+      limit: size
+    };
+
+    const query = {};
+    const searchForQuery = [];
+
+    // maps trought fields and  creates RegExp for find query
+    _.map(["name"], el => {
+      if (req.query.search) searchForQuery.push({ [el]: search });
+    });
+
+    if (searchForQuery.length > 0) query.$or = searchForQuery;
+
+    const totalRecords = await CompanyModel.countDocuments(query).lean();
+    const companies = await CompanyModel.find(query)
+      .skip(pagination.skip)
+      .limit(pagination.limit)
+      .populate("mainAdmin")
+      .lean();
+
+    if (!companies)
+      return res.status(404).send({ success: false, message: err.message });
+
+    return res.status(200).send({
+      success: true,
+      content: { companies: companies },
+      totalRecords: totalRecords
     });
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    return res.status(500).send({ success: false, message: err.message });
   }
 };
 //Get specific company from the database by id

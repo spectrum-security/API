@@ -123,3 +123,5 @@
 {"level":"info","message":"SAVED RECEIVED EMAIL => ok"}
 {"level":"info","message":"SAVED RECEIVED EMAIL => ok"}
 {"level":"info","message":"SAVED RECEIVED EMAIL => ok"}
+{"level":"info","message":"SAVED RECEIVED EMAIL => ok"}
+{"level":"info","message":"EMAIL SENT =>{\"accepted\":[\"coelho.jorge11@gmail.com\"],\"rejected\":[],\"envelopeTime\":574,\"messageTime\":747,\"messageSize\":802,\"response\":\"250 2.0.0 OK  1579608664 b21sm3951591wmd.37 - gsmtp\",\"envelope\":{\"from\":\"esmad.spectrum@gmail.com\",\"to\":[\"coelho.jorge11@gmail.com\"]},\"messageId\":\"<27cad102-b49c-e7de-951b-f3bb36f99edf@gmail.com>\"}"}
