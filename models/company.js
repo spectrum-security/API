@@ -24,6 +24,9 @@ const companySchema = new Schema(
       type: Number,
       default: 0
     },
+    image: {
+      type: String
+    },
     offices: {
       type: [
         {
@@ -34,8 +37,7 @@ const companySchema = new Schema(
             type: String
           }
         }
-      ],
-      required: true
+      ]
     },
     // Prototype may not use
     paymentMethod: {

@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const checkAuth = require("../middleware/checkAuth");
 
-router.get("/", checkAuth, CompanyController.getCompany);
+router.get("/", checkAuth, CompanyController.getCompanies);
 
 router.get("/:id", checkAuth, CompanyController.getCompanyById);
 

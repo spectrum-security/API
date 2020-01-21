@@ -2,6 +2,7 @@ const RecEmailConfigModel = require("../models/emailConfig");
 const RecEmailModel = require("../models/receivedMail");
 const Base64 = require("js-base64").Base64;
 const moment = require("moment");
+const _ = require("lodash");
 
 exports.createdLast7Days = async (req, res, next) => {
   try {
@@ -38,39 +39,40 @@ exports.createdLast7Days = async (req, res, next) => {
 
 exports.getInbox = async (req, res) => {
   try {
+    // pagination vars
     const page = parseInt(req.query.page);
-    const size = parseInt(req.query.perPage) || 5;
-    const sort = req.query.orderBy
-      ? { [req.query.orderType]: req.query.orderType }
-      : null;
+    const size = parseInt(req.query.perPage);
+    const orderBy = req.query.orderBy;
+    const orderType = req.query.orderType;
+    const search = new RegExp(".*" + req.query.search + ".*", "i");
 
     const pagination = {
       skip: size * (page - 1),
       limit: size
     };
 
-    const query = {
-      email: {
-        $exists: true
-      }
-    };
-    const search = [];
+    const query = {};
+    const searchForQuery = [];
 
-    if (req.query.from)
-      search.push({
-        from: { email: new RegExp(".*" + req.query.hostname + ".*", "i") }
-      });
+    // maps trought fields and  creates RegExp for find query
+    _.map(["from", "title"], el => {
+      if (req.query.search) searchForQuery.push({ [el]: search });
+    });
 
-    if (search.length > 0) query.$and = search;
+    if (searchForQuery.length > 0) query.$or = searchForQuery;
+
+    console.log(query);
 
     const totalRecords = await RecEmailModel.countDocuments(query).lean();
     const inbox = await RecEmailModel.find(query, {}, pagination)
-      .sort(sort)
+      .skip(pagination.skip)
+      .limit(pagination.limit)
+      .sort({ [orderBy]: orderType })
       .lean();
 
     return res.status(200).send({
       success: true,
-      totalRecords: Math.ceil(totalRecords / size),
+      totalRecords: totalRecords,
       content: {
         inbox: inbox
       }

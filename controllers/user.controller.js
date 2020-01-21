@@ -89,7 +89,6 @@ exports.get = async function(req, res) {
     // pagination vars
     const page = parseInt(req.query.page);
     const size = parseInt(req.query.perPage);
-    console.log(req.query.perPage);
     const orderBy = req.query.orderBy;
     const orderType = req.query.orderType;
     const search = req.query.search
