@@ -10,6 +10,8 @@ router.get("/company_sensors/:id", SensorController.getCompanySensorsList);
 
 router.post("/", SensorController.postSensor);
 
+router.post("/:id/active", SensorController.changeActive);
+
 router.put("/:id", SensorController.updateSensor);
 
 router.delete("/:id", SensorController.deleteSensor);
