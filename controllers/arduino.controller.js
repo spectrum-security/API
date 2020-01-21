@@ -5,18 +5,15 @@ const port = new SerialPort('COM10', {
     baudRate: 9600
 });
 
-const Log = require("../models/log")
+const Sensor = require("../models/sensor")
 
 port.pipe(parser)
 
 let logs = []
-let move = {}
 let sendData = false
 let movementStarted = false
 let movement = {}
 let limit = 10
-
-
 
 listenForData = function () {
     parser.on("data", async data => {
@@ -43,12 +40,17 @@ listenForData = function () {
         })
 
         if (sendData) {
-            console.log(movement)
-            await Log.create(movement)
-            sendData = false
-            logs = []
+            try {
+                const sensor = await Sensor.find({ _id: movement.sensorId })
+                sensor.logs.push(movement)
+                await sensor.save()
+                sendData = false
+                logs = []
+                console.log(sensor.logs[sensor.logs.length - 1])
+            } catch (err) {
+                console.log(err)
+            }
         }
-        console.log(info.value)
     })
 }
 
