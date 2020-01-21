@@ -109,4 +109,6 @@ process.on("uncaughtException", error => {
   logger.log({ level: "error", message: error.stack });
 });
 
+// listens to arduino port
+require("./controllers/arduino.controller")
 module.exports = app;

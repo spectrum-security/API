@@ -10,6 +10,14 @@ const logSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Sensor",
       required: true
+    },
+    started: {
+      type: Date,
+      required: true
+    },
+    finished: {
+      type: Date,
+      required: true
     }
   },
   {
