@@ -6,6 +6,7 @@ const port = new SerialPort('COM10', {
 });
 
 const Sensor = require("../models/sensor")
+const Log = require("../models/log")
 
 port.pipe(parser)
 
@@ -24,7 +25,6 @@ listenForData = function () {
         }
         logs.push(info)
 
-
         logs.forEach(log => {
             if (log.value < limit) {
                 sendData = false
@@ -41,12 +41,15 @@ listenForData = function () {
 
         if (sendData) {
             try {
-                const sensor = await Sensor.find({ _id: movement.sensorId })
+                const sensor = await Sensor.findById(movement.sensorId)
                 sensor.logs.push(movement)
                 await sensor.save()
+                console.log(movement)
+                await Log.create(movement)
+
+
                 sendData = false
                 logs = []
-                console.log(sensor.logs[sensor.logs.length - 1])
             } catch (err) {
                 console.log(err)
             }

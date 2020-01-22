@@ -24,6 +24,20 @@ const sensorSchema = new Schema(
       },
       default: 1
     },
+    logs: [
+      {
+        sensorId: {
+          type: Schema.Types.ObjectId,
+          ref: "Sensor"
+        },
+        started: {
+          type: Date
+        },
+        finished: {
+          type: Date
+        }
+      }
+    ],
     maintenance: [
       {
         date: {
