@@ -9,6 +9,8 @@ router.get("/", LogController.getLogs);
 
 router.get("/analytics", LogController.getForChart);
 
-router.post("/add/:sensorId", LogController.addNewLog);
+router.get("/:id", LogController.getLogsBySensorId);
+
+// router.post("/add/:sensorId", LogController.addNewLog);
 
 module.exports = router;
