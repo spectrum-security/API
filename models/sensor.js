@@ -22,7 +22,7 @@ const sensorSchema = new Schema(
         },
         message: "{VALUE} is not a valid type"
       },
-      required: true
+      default: 1
     },
     maintenance: [
       {

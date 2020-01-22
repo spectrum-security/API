@@ -1,5 +1,12 @@
 const CompanyModel = require("../models/company");
+const UserModel = require("../models/user");
+const SensorModel = require("../models/sensor");
+const TemplateEmailModel = require("../models/templateEmail");
+const SentEmailModel = require("../models/sentEmail");
+const logger = require("../helpers/logger");
 const messages = require("../utils/jsonMessages");
+const Handlebars = require("handlebars");
+const mailHelper = require("../helpers/mailHelper");
 const _ = require("lodash");
 
 //Get a specific company from the database by name
@@ -47,16 +54,36 @@ exports.getCompanies = async (req, res, next) => {
 //Get specific company from the database by id
 exports.getCompanyById = async (req, res, next) => {
   try {
-    const company = await (
-      await CompanyModel.findOne({ _id: req.params.id })
-    ).populated("mainAdmin");
+    const company = await CompanyModel.findOne({
+      _id: req.params.id
+    }).populate("mainAdmin");
     console.log(req.params.id);
-    if (!company) return res.status(404).json({ message: err.message });
+    if (!company) return res.status(404).json({ message: "coisas" });
     return res.status(200).json({
       company: company
     });
   } catch (err) {
     return res.status(500).json({ message: err.message });
+  }
+};
+
+exports.getCompanyUsers = async (req, res, next) => {
+  try {
+    const companyId = req.params.id;
+    const users = await UserModel.find({ companyId: companyId })
+      .populate("companyId")
+      .lean();
+
+    if (!users)
+      return res.status(404).send({
+        success: false,
+        message:
+          "No users which is weird cuz you must have a user when you creat a fucking company"
+      });
+
+    res.status(200).send({ success: true, content: { users: users } });
+  } catch (error) {
+    res.status(500).send({ success: false, message: error.message });
   }
 };
 
@@ -105,16 +132,81 @@ exports.updateCompany = async (req, res, next) => {
 //Add a new company to the DataBase
 exports.postCompany = async (req, res, next) => {
   try {
-    let newCompany = new CompanyModel(req.body);
     console.log(req.body);
-    await newCompany.save((err, doc) => {
-      console.log("adicionado com sucesso");
-      if (err) {
-        res.status(500).send("erro de bd");
-      } else {
-        res.send(doc);
-      }
+
+    const userToSave = {
+      email: req.body.user.email,
+      name: req.body.user.name,
+      password: req.body.password,
+      avatar: req.body.user.avatar
+    };
+
+    const companyToSave = {
+      name: req.body.company.name,
+      offices: req.body.company.offices,
+      paymentMethod: req.body.company.paymentMethod,
+      image: req.body.company.image
+    };
+
+    const sensorToSave = {
+      location: req.body.sensor.location,
+      sensorType: req.body.sensorType
+    };
+
+    const newUser = new UserModel(userToSave);
+
+    companyToSave.mainAdmin = newUser._id;
+
+    const newCompany = new CompanyModel(companyToSave);
+
+    newUser.companyId = newCompany._id;
+
+    sensorToSave.companyId = newCompany._id;
+
+    const newSensor = new SensorModel(sensorToSave);
+
+    await newUser.save();
+    await newCompany.save();
+    await newSensor.save();
+
+    const templateMessage = await TemplateEmailModel.findOne({
+      type: 4
+    }).lean();
+
+    const template = Handlebars.compile(templateMessage.content);
+    const emailToSend = template({
+      user: { email: newUser.email, password: req.body.password }
     });
+
+    const info = await mailHelper.sendMail(
+      newUser.email,
+      templateMessage.title,
+      emailToSend
+    );
+
+    const sentEmail = new SentEmailModel({
+      to: newUser.email,
+      title: templateMessage.title,
+      text: emailToSend
+    });
+
+    await sentEmail.save();
+
+    logger.log({
+      level: "info",
+      message: "EMAIL SENT =>" + JSON.stringify(info)
+    });
+
+    res.status(203).send({ success: true });
+
+    // await newCompany.save((err, doc) => {
+    //   console.log("adicionado com sucesso");
+    //   if (err) {
+    //     res.status(500).send("erro de bd");
+    //   } else {
+    //     res.send(doc);
+    //   }
+    // });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }

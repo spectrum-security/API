@@ -5,11 +5,11 @@ const checkAuth = require("../middleware/checkAuth");
 
 router.get("/", checkAuth, controller.get);
 
-router.get("/created/last_7_days", controller.createdLast7Days);
+router.get("/created/last_7_days", checkAuth, controller.createdLast7Days);
 
-router.get("/analytics", controller.getForChart);
+router.get("/analytics", checkAuth, controller.getForChart);
 
-router.put("/:id", controller.put);
-router.delete("/:id", controller.del);
+router.put("/:id", checkAuth, controller.put);
+router.delete("/:id", checkAuth, controller.del);
 
 module.exports = router;

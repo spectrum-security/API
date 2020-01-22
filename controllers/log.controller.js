@@ -1,4 +1,6 @@
 const LogModel = require("../models/log");
+const SensorModel = require("../models/sensor");
+const CompanyModel = require("../models/company");
 const msg = require("../utils/jsonMessages");
 const _ = require("lodash");
 
@@ -140,6 +142,38 @@ exports.getLogs = async (req, res, next) => {
 //       .send({ message: msg.internalServerError.message });
 //   }
 // };
+
+exports.getByCompany = async (req, res, next) => {
+  try {
+    const companyId = req.params.id;
+    const date = moment(req.query.date);
+    const dateLimit = moment(req.body.date).add(1, "d");
+
+    console.log(dateLimit);
+
+    let companySensors = await SensorModel.find({
+      companyId: companyId
+    }).select("_id");
+
+    companySensors = companySensors.map(el => (el = el._id));
+
+    console.log(companySensors);
+
+    const query = {
+      $and: [{ sensorId: { $in: companySensors } }]
+    };
+
+    if (date) query.$and.push({ createdAt: { $gte: date, $lt: dateLimit } });
+
+    const logs = await LogModel.find(query)
+      .populate("sensorId")
+      .lean();
+
+    res.status(200).send({ success: true, content: { logs: logs } });
+  } catch (error) {
+    res.status(500).send({ success: false, message: error.message });
+  }
+};
 
 exports.getLogsBySensorId = async (req, res, next) => {
   try {
