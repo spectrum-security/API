@@ -41,14 +41,15 @@ const companySchema = new Schema(
     },
     // Prototype may not use
     paymentMethod: {
-      type: Number,
-      validate: {
-        validator: value => {
-          return [1, 2, 3].indexOf(value) > -1; // 1:Paypal 2:CreditCard 3:Bank Transfer
-        },
-        message: "{VALUE} is not a valid type"
+      creditCardNumber: {
+        type: Number
       },
-      required: true
+      cvv: {
+        type: Number
+      },
+      expiresIn: {
+        type: Date
+      }
     }
   },
   {
