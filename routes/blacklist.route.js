@@ -4,22 +4,12 @@ const adminMiddleware = require("../middleware/adminMiddleware");
 const express = require("express");
 const router = express.Router();
 
-router.get("/", checkAuth, adminMiddleware, BlacklistController.getBlacklist);
+router.get("/", adminMiddleware, BlacklistController.getBlacklist);
 
-router.post(
-  "/",
-  checkAuth,
-  adminMiddleware,
-  BlacklistController.createBlacklist
-);
+router.post("/", adminMiddleware, BlacklistController.createBlacklist);
 
-router.put("/", checkAuth, adminMiddleware, BlacklistController.editBlacklist);
+router.put("/", adminMiddleware, BlacklistController.editBlacklist);
 
-router.delete(
-  "/",
-  checkAuth,
-  adminMiddleware,
-  BlacklistController.deleteBlacklist
-);
+router.delete("/", adminMiddleware, BlacklistController.deleteBlacklist);
 
 module.exports = router;

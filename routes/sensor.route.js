@@ -3,22 +3,18 @@ const express = require("express");
 const router = express.Router();
 const checkAuth = require("../middleware/checkAuth");
 
-router.get("/", checkAuth, SensorController.getSensors);
+router.get("/", SensorController.getSensors);
 
-router.get("/:id", checkAuth, SensorController.getSensorById);
+router.get("/:id", SensorController.getSensorById);
 
-router.get(
-  "/company_sensors/:id",
-  checkAuth,
-  SensorController.getCompanySensorsList
-);
+router.get("/company_sensors/:id", SensorController.getCompanySensorsList);
 
-router.post("/", checkAuth, SensorController.postSensor);
+router.post("/", SensorController.postSensor);
 
-router.post("/:id/active", checkAuth, SensorController.changeActive);
+router.post("/:id/active", SensorController.changeActive);
 
-router.put("/:id", checkAuth, SensorController.updateSensor);
+router.put("/:id", SensorController.updateSensor);
 
-router.delete("/:id", checkAuth, SensorController.deleteSensor);
+router.delete("/:id", SensorController.deleteSensor);
 
 module.exports = router;

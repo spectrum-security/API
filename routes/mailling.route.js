@@ -4,54 +4,20 @@ const express = require("express");
 const router = express.Router();
 const adminMiddleware = require("../middleware/adminMiddleware");
 
-router.get("/", checkAuth, TemplateEmailController.getTemplateEmail);
+router.get("/", TemplateEmailController.getTemplateEmail);
 
-router.get(
-  "/last_7_days",
-  checkAuth,
-  adminMiddleware,
-  TemplateEmailController.sentLast7Days
-);
+router.get("/last_7_days", TemplateEmailController.sentLast7Days);
 
-router.post(
-  "/add",
-  checkAuth,
-  adminMiddleware,
-  TemplateEmailController.createTemplateEmail
-);
+router.post("/add", TemplateEmailController.createTemplateEmail);
 
-router.put(
-  "/update/:id",
-  checkAuth,
-  adminMiddleware,
-  TemplateEmailController.editTemplateEmail
-);
+router.put("/update/:id", TemplateEmailController.editTemplateEmail);
 
-router.delete(
-  "/delete/:id",
-  checkAuth,
-  adminMiddleware,
-  TemplateEmailController.deleteTemplateEmail
-);
+router.delete("/delete/:id", TemplateEmailController.deleteTemplateEmail);
 
-router.post(
-  "/set_default",
-  checkAuth,
-  TemplateEmailController.setDefaultTemplateEmail
-);
+router.post("/set_default", TemplateEmailController.setDefaultTemplateEmail);
 
-router.get(
-  "/types",
-  checkAuth,
-  adminMiddleware,
-  TemplateEmailController.getTemplateEmailTypes
-);
+router.get("/types", TemplateEmailController.getTemplateEmailTypes);
 
-router.post(
-  "/send",
-  checkAuth,
-  adminMiddleware,
-  TemplateEmailController.sendEmailTo
-);
+router.post("/send", TemplateEmailController.sendEmailTo);
 
 module.exports = router;
