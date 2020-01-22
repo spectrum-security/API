@@ -4,18 +4,14 @@ const adminMiddleware = require("../middleware/adminMiddleware");
 const express = require("express");
 const router = express.Router();
 
-router.get("/", adminMiddleware, RecEmailController.getRecEmailConfig);
+router.get("/", RecEmailController.getRecEmailConfig);
 
-router.get("/inbox", adminMiddleware, RecEmailController.getInbox);
+router.get("/inbox", RecEmailController.getInbox);
 
-router.get(
-  "/last_7_days",
-  adminMiddleware,
-  RecEmailController.createdLast7Days
-);
+router.get("/last_7_days", RecEmailController.createdLast7Days);
 
-router.post("/", adminMiddleware, RecEmailController.createRecEmailConfig);
+router.post("/", RecEmailController.createRecEmailConfig);
 
-router.delete("/", adminMiddleware, RecEmailController.deleteRecEmailConfig);
+router.delete("/", RecEmailController.deleteRecEmailConfig);
 
 module.exports = router;
