@@ -92,28 +92,83 @@ exports.getForChart = async (req, res, next) => {
 
 exports.getLogs = async (req, res, next) => {
   try {
-    const companyId = req.params.companyId ? req.params.companyId : null;
+    // pagination vars
+    const page = parseInt(req.query.page);
+    const size = parseInt(req.query.perPage);
 
-    const logs = await LogModel.find({ companyId: companyId }).lean();
-    res.status(200).send({ success: true, content: { logs: logs } });
+    // set skip and size of pagination query
+    const pagination = {
+      skip: size * (page - 1), // -1 because query.page starts at 1
+      limit: size
+    };
+
+    // counts total users for pagination calculation in frontend
+    const totalRecords = await LogModel.countDocuments().lean();
+
+    const logs = await LogModel.find()
+      .populate({
+        path: "sensorId",
+        populate: { path: "companyId" }
+      })
+      .skip(pagination.skip)
+      .limit(pagination.limit)
+      .lean();
+    res.status(200).send({
+      success: true,
+      content: { logs: logs },
+      totalRecords: totalRecords
+    });
   } catch (error) {
     res.status(500).send({ success: false, message: error.message });
   }
 };
 
-exports.addNewLog = async (req, res) => {
+// FOR TESTING PURPOSES
+// exports.addNewLog = async (req, res) => {
+//   try {
+//     const dataToSave = {
+//       sensorId: req.params.sensorId
+//     };
+//     const savedLog = await new LogModel(dataToSave).save();
+//     res.status(201).send({
+//       success: true,
+//       content: { message: "Sensor log added", savedLog: savedLog }
+//     });
+//   } catch (error) {
+//     res
+//       .status(msg.internalServerError.status)
+//       .send({ message: msg.internalServerError.message });
+//   }
+// };
+
+exports.getLogsBySensorId = async (req, res, next) => {
   try {
-    const dataToSave = {
-      sensorId: req.params.sensorId
+    const sensorId = req.params.id;
+    // pagination vars
+    const page = parseInt(req.query.page);
+    const size = parseInt(req.query.perPage);
+
+    // set skip and size of pagination query
+    const pagination = {
+      skip: size * (page - 1), // -1 because query.page starts at 1
+      limit: size
     };
-    const savedLog = await new LogModel(dataToSave).save();
-    res.status(201).send({
+
+    // counts total users for pagination calculation in frontend
+    const totalRecords = await LogModel.countDocuments({
+      sensorId: sensorId
+    }).lean();
+
+    const logs = await LogModel.find({ sensorId: sensorId })
+      .skip(pagination.skip)
+      .limit(pagination.limit)
+      .lean();
+    res.status(200).send({
       success: true,
-      content: { message: "Sensor log added", savedLog: savedLog }
+      content: { logs: logs },
+      totalRecords: totalRecords
     });
   } catch (error) {
-    res
-      .status(msg.internalServerError.status)
-      .send({ message: msg.internalServerError.message });
+    res.status(500).send({ success: false, message: error.message });
   }
 };
