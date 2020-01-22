@@ -3,15 +3,15 @@ const express = require("express");
 const router = express.Router();
 const checkAuth = require("../middleware/checkAuth");
 
-router.get("/last_7_days", checkAuth, LogController.last7DaysLogs);
+router.get("/last_7_days", LogController.last7DaysLogs);
 
-router.get("/", checkAuth, LogController.getLogs);
+router.get("/", LogController.getLogs);
 
-router.get("/company_sensors/:id", checkAuth, LogController.getByCompany);
+router.get("/company_sensors/:id", LogController.getByCompany);
 
-router.get("/analytics", checkAuth, LogController.getForChart);
+router.get("/analytics", LogController.getForChart);
 
-router.get("/:id", checkAuth, LogController.getLogsBySensorId);
+router.get("/:id", LogController.getLogsBySensorId);
 
 // router.post("/add/:sensorId", LogController.addNewLog);
 

@@ -4,12 +4,12 @@ const express = require("express");
 const router = express.Router();
 const checkAuth = require("../middleware/checkAuth");
 
-router.get("/", checkAuth, RequestController.getRequest);
+router.get("/", RequestController.getRequest);
 
-router.post("/:companyId", checkAuth, RequestController.postRequest);
+router.post("/:companyId", RequestController.postRequest);
 
-router.put("/:id", checkAuth, RequestController.putRequest);
+router.put("/:id", RequestController.putRequest);
 
-router.delete("/:id", checkAuth, RequestController.delRequest);
+router.delete("/:id", RequestController.delRequest);
 
 module.exports = router;

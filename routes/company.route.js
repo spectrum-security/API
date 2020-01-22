@@ -4,21 +4,20 @@ const router = express.Router();
 const checkAuth = require("../middleware/checkAuth");
 const passwordGenerator = require("../utils/passwordGenerator");
 
-router.get("/", checkAuth, CompanyController.getCompanies);
+router.get("/", CompanyController.getCompanies);
 
-router.get("/:id", checkAuth, CompanyController.getCompanyById);
+router.get("/:id", CompanyController.getCompanyById);
 
-router.get("/:id/users", checkAuth, CompanyController.getCompanyUsers);
+router.get("/:id/users", CompanyController.getCompanyUsers);
 
 router.post(
   "/",
-  checkAuth,
   passwordGenerator.generatePassword,
   CompanyController.postCompany
 );
 
-router.delete("/:id", checkAuth, CompanyController.deleteCompany);
+router.delete("/:id", CompanyController.deleteCompany);
 
-router.put("/:id", checkAuth, CompanyController.updateCompany);
+router.put("/:id", CompanyController.updateCompany);
 
 module.exports = router;

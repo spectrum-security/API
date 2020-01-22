@@ -3,13 +3,13 @@ const router = express.Router();
 const controller = require("../controllers/user.controller");
 const checkAuth = require("../middleware/checkAuth");
 
-router.get("/", checkAuth, controller.get);
+router.get("/", controller.get);
 
-router.get("/created/last_7_days", checkAuth, controller.createdLast7Days);
+router.get("/created/last_7_days", controller.createdLast7Days);
 
-router.get("/analytics", checkAuth, controller.getForChart);
+router.get("/analytics", controller.getForChart);
 
-router.put("/:id", checkAuth, controller.put);
-router.delete("/:id", checkAuth, controller.del);
+router.put("/:id", controller.put);
+router.delete("/:id", controller.del);
 
 module.exports = router;
