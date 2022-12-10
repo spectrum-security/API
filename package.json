@@ -22,7 +22,7 @@
     "crypto": "^1.0.1",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
-    "express": "~4.16.1",
+    "express": "~4.17.3",
     "express-validator": "^6.3.0",
     "fs": "0.0.1-security",
     "fs-extra": "^8.1.0",
